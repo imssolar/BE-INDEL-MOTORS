@@ -1,17 +1,19 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../db";
+
+import { DataTypes } from "sequelize"
+import { sequelize } from "../db"
 
 
-export const SpareGroup = sequelize.define('spare_group', {
 
+
+export const Unit = sequelize.define('unit', {
     id: {
         type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: false
+        autoIncrement: true
     },
-    name: {
+    name_unit: {
         type: DataTypes.STRING,
-        allowNull: false
+
     },
     description: {
         type: DataTypes.STRING,
@@ -21,4 +23,5 @@ export const SpareGroup = sequelize.define('spare_group', {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
+
 })

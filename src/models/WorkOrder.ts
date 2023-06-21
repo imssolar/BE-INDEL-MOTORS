@@ -1,16 +1,20 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db";
+import { OrderGroup } from "./OrderGroup";
+import { Spare } from "./Spare";
+import { Vehicle } from "./Vehicle";
 
 
 
 export const WorkOrder = sequelize.define('work_order', {
-    ppu: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-        allowNull: false
-    },
     ot_number: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement:true
+    },
+    ppu: {
+        type: DataTypes.STRING,
         allowNull: false
     },
     date: {
@@ -24,5 +28,18 @@ export const WorkOrder = sequelize.define('work_order', {
     ot_type: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    
 })
+
+
+
+OrderGroup.belongsTo(WorkOrder, {
+	foreignKey: 'work_order_id',
+})
+
+WorkOrder.belongsTo(Vehicle)
+WorkOrder.belongsTo(Spare)
+WorkOrder.hasOne(Vehicle)
+WorkOrder.hasOne(OrderGroup)
+WorkOrder.hasMany(Spare)

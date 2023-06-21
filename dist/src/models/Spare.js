@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Spare = void 0;
 const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
+const SpareGroup_1 = require("./SpareGroup");
+const Unit_1 = require("./Unit");
 exports.Spare = db_1.sequelize.define('spare', {
     id: {
         type: sequelize_1.DataTypes.STRING,
@@ -17,17 +19,15 @@ exports.Spare = db_1.sequelize.define('spare', {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    /*Esto debe estar ligado a una tabla Unidad o tipo de unidad*/
-    unit: {
-        type: sequelize_1.DataTypes.STRING
-    },
     stock: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    /*Esto debe estar ligado a una tabla grupo*/
-    group: {
-        type: sequelize_1.DataTypes.STRING
+    status: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: true
     }
 });
+exports.Spare.belongsTo(Unit_1.Unit);
+exports.Spare.belongsTo(SpareGroup_1.SpareGroup);
 //# sourceMappingURL=Spare.js.map

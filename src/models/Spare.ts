@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db";
+import { SpareGroup } from "./SpareGroup";
+import { Unit } from "./Unit";
 
 
 
@@ -19,17 +21,16 @@ export const Spare = sequelize.define('spare', {
         allowNull: false
 
     },
-    /*Esto debe estar ligado a una tabla Unidad o tipo de unidad*/
-    unit: {
-        type: DataTypes.STRING
-    },
     stock: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    /*Esto debe estar ligado a una tabla grupo*/
-    group: {
-        type: DataTypes.STRING
+    status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 
 })
+
+Spare.belongsTo(Unit)
+Spare.belongsTo(SpareGroup)

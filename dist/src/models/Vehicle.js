@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Vehicle = void 0;
 const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
+const Client_1 = require("./Client");
 exports.Vehicle = db_1.sequelize.define('vehicle', {
     licence_plate: {
         type: sequelize_1.DataTypes.STRING,
@@ -22,4 +23,5 @@ exports.Vehicle = db_1.sequelize.define('vehicle', {
         type: sequelize_1.DataTypes.INTEGER
     }
 });
+exports.Vehicle.belongsTo(Client_1.Client);
 //# sourceMappingURL=Vehicle.js.map

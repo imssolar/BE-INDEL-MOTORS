@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SpareGroup = void 0;
+exports.Unit = void 0;
 const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
-exports.SpareGroup = db_1.sequelize.define('spare_group', {
+exports.Unit = db_1.sequelize.define('unit', {
     id: {
         type: sequelize_1.DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: false
+        autoIncrement: true
     },
-    name: {
+    name_unit: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
     },
     description: {
         type: sequelize_1.DataTypes.STRING,
@@ -22,4 +21,4 @@ exports.SpareGroup = db_1.sequelize.define('spare_group', {
         defaultValue: true
     }
 });
-//# sourceMappingURL=SpareGroup.js.map
+//# sourceMappingURL=Unit.js.map

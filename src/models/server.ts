@@ -1,11 +1,20 @@
 import express, { Application } from 'express'
 import { sequelize } from '../db'
 import accountsRoutes from '../routes/client'
+import workOrderRoutes from '../routes/workOder'
+import spareRoutes from '../routes/spare'
+import unitRoutes from '../routes/unit'
+import spareGroupsRoutes from '../routes/spareGroup'
+
+
 export class Server {
 	private app: Application
 	private port: string | undefined
 	private apiPaths = {
 		accountsPath: '/api/account',
+		workOrderPath: '/api/workorder',
+		sparePath: '/api/spare',
+		unitPath: 'api/unit'
 	}
 	constructor() {
 		this.app = express()
@@ -28,6 +37,12 @@ export class Server {
 
 	routes() {
 		this.app.use(this.apiPaths.accountsPath, accountsRoutes)
+		this.app.use(this.apiPaths.workOrderPath, workOrderRoutes)
+		this.app.use(this.apiPaths.sparePath, spareRoutes)
+		this.app.use(this.apiPaths.unitPath, unitRoutes)
+		this.app.use(this.apiPaths.unitPath, spareGroupsRoutes)
+
+
 	}
 
 	listen() {

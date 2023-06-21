@@ -16,10 +16,17 @@ exports.Server = void 0;
 const express_1 = __importDefault(require("express"));
 const db_1 = require("../db");
 const client_1 = __importDefault(require("../routes/client"));
+const workOder_1 = __importDefault(require("../routes/workOder"));
+const spare_1 = __importDefault(require("../routes/spare"));
+const unit_1 = __importDefault(require("../routes/unit"));
+const spareGroup_1 = __importDefault(require("../routes/spareGroup"));
 class Server {
     constructor() {
         this.apiPaths = {
             accountsPath: '/api/account',
+            workOrderPath: '/api/workorder',
+            sparePath: '/api/spare',
+            unitPath: 'api/unit'
         };
         this.app = (0, express_1.default)();
         this.port = '4000';
@@ -39,6 +46,10 @@ class Server {
     }
     routes() {
         this.app.use(this.apiPaths.accountsPath, client_1.default);
+        this.app.use(this.apiPaths.workOrderPath, workOder_1.default);
+        this.app.use(this.apiPaths.sparePath, spare_1.default);
+        this.app.use(this.apiPaths.unitPath, unit_1.default);
+        this.app.use(this.apiPaths.unitPath, spareGroup_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {
