@@ -7,7 +7,7 @@ const SpareGroup_1 = require("./SpareGroup");
 const Unit_1 = require("./Unit");
 exports.Spare = db_1.sequelize.define('spare', {
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },

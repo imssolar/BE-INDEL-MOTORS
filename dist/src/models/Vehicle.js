@@ -5,7 +5,7 @@ const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
 const Client_1 = require("./Client");
 exports.Vehicle = db_1.sequelize.define('vehicle', {
-    licence_plate: {
+    license_plate: {
         type: sequelize_1.DataTypes.STRING,
         primaryKey: true,
         autoIncrement: false

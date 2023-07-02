@@ -34,9 +34,6 @@ export const WorkOrder = sequelize.define('work_order', {
 
 
 
-OrderGroup.belongsTo(WorkOrder, {
-	foreignKey: 'work_order_id',
-})
 
 WorkOrder.belongsTo(Vehicle)
 WorkOrder.belongsTo(Spare)

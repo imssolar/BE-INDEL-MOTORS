@@ -5,7 +5,7 @@ const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
 exports.Unit = db_1.sequelize.define('unit', {
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },

@@ -8,7 +8,7 @@ import { Unit } from "./Unit";
 export const Spare = sequelize.define('spare', {
 
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },

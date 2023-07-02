@@ -30,9 +30,6 @@ exports.WorkOrder = db_1.sequelize.define('work_order', {
         allowNull: false
     },
 });
-OrderGroup_1.OrderGroup.belongsTo(exports.WorkOrder, {
-    foreignKey: 'work_order_id',
-});
 exports.WorkOrder.belongsTo(Vehicle_1.Vehicle);
 exports.WorkOrder.belongsTo(Spare_1.Spare);
 exports.WorkOrder.hasOne(Vehicle_1.Vehicle);

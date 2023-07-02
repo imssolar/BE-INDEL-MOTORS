@@ -7,7 +7,7 @@ import { sequelize } from "../db"
 
 export const Unit = sequelize.define('unit', {
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },

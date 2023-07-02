@@ -13,6 +13,7 @@ exports.updateClient = exports.deleteClient = exports.addClient = exports.getCli
 const sequelize_1 = require("sequelize");
 const Client_1 = require("../models/Client");
 const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("get clients");
     try {
         const clients = yield Client_1.Client.findAll();
         res.status(200).json(clients);
@@ -23,6 +24,7 @@ const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getClients = getClients;
 const getClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("get client");
     const { rut } = req.params;
     console.log(rut);
     try {

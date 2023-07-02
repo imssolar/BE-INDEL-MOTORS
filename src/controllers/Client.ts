@@ -6,6 +6,7 @@ import { Client } from "../models/Client";
 
 
 export const getClients = async (req: Request, res: Response) => {
+    console.log("get clients")
     try {
         const clients = await Client.findAll()
         res.status(200).json(clients)
@@ -15,6 +16,7 @@ export const getClients = async (req: Request, res: Response) => {
 }
 
 export const getClient = async (req: Request, res: Response) => {
+    console.log("get client")
     const { rut } = req.params
     console.log(rut)
     try {

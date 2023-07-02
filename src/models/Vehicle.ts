@@ -3,7 +3,7 @@ import { sequelize } from "../db";
 import { Client } from "./Client";
 
 export const Vehicle = sequelize.define('vehicle', {
-    licence_plate: {
+    license_plate: {
         type: DataTypes.STRING,
         primaryKey: true,
         autoIncrement: false
