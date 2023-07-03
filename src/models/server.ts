@@ -6,8 +6,10 @@ import spareRoutes from '../routes/spare'
 import unitRoutes from '../routes/unit'
 import spareGroupsRoutes from '../routes/spareGroup'
 import vehicleRoutes from '../routes/vehicle'
+import orderGroupsRoutes from '../routes/orderGroup'
 
-export class Server {
+
+ export class Server {
 	private app: Application
 	private port: string | undefined
 	private apiPaths = {
@@ -15,7 +17,9 @@ export class Server {
 		workOrderPath: '/api/workorder',
 		sparePath: '/api/spare',
 		unitPath: '/api/unit',
-		vehiclePath: '/api/vehicle'
+		vehiclePath: '/api/vehicle',
+		orderGroupPath:'/api/ordergroup',
+		spareGroupPath:'/api/spareGroup'
 	}
 	constructor() {
 		this.app = express()
@@ -41,9 +45,9 @@ export class Server {
 		this.app.use(this.apiPaths.workOrderPath, workOrderRoutes)
 		this.app.use(this.apiPaths.sparePath, spareRoutes)
 		this.app.use(this.apiPaths.unitPath, unitRoutes)
-		this.app.use(this.apiPaths.sparePath, spareGroupsRoutes)
+		this.app.use(this.apiPaths.spareGroupPath, spareGroupsRoutes)
 		this.app.use(this.apiPaths.vehiclePath,vehicleRoutes)
-
+		this.app.use(this.apiPaths.orderGroupPath,orderGroupsRoutes)
 	}
 
 	listen() {

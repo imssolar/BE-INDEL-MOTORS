@@ -28,6 +28,6 @@ exports.Spare = db_1.sequelize.define('spare', {
         defaultValue: true
     }
 });
-exports.Spare.belongsTo(Unit_1.Unit);
-exports.Spare.belongsTo(SpareGroup_1.SpareGroup);
+exports.Spare.belongsTo(Unit_1.Unit, { foreignKey: 'unit_id' });
+exports.Spare.belongsTo(SpareGroup_1.SpareGroup, { foreignKey: 'spareGroup_id' });
 //# sourceMappingURL=Spare.js.map

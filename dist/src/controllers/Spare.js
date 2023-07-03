@@ -32,9 +32,9 @@ const getSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getSpare = getSpare;
 const addSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, cost, stock } = req.body;
+    const { name, cost, stock, unit_id, spareGroup_id } = req.body;
     try {
-        const newSpare = yield Spare_1.Spare.create({ name, cost, stock });
+        const newSpare = yield Spare_1.Spare.create({ name, cost, stock, unit_id, spareGroup_id });
         res.status(200).json({ newSpare });
     }
     catch (error) {

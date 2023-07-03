@@ -5,9 +5,9 @@ import { sequelize } from "../db";
 export const SpareGroup = sequelize.define('spare_group', {
 
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: false
+        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING,

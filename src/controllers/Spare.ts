@@ -24,9 +24,9 @@ export const getSpare = async (req: Request, res: Response) => {
 }
 
 export const addSpare = async (req: Request, res: Response) => {
-    const { name, cost, stock } = req.body
+    const { name, cost, stock, unit_id, spareGroup_id } = req.body
     try {
-        const newSpare = await Spare.create({ name, cost, stock })
+        const newSpare = await Spare.create({ name, cost, stock, unit_id, spareGroup_id })
         res.status(200).json({ newSpare })
     } catch (error) {
         res.status(500).json({ message: error })

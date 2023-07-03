@@ -21,6 +21,7 @@ const spare_1 = __importDefault(require("../routes/spare"));
 const unit_1 = __importDefault(require("../routes/unit"));
 const spareGroup_1 = __importDefault(require("../routes/spareGroup"));
 const vehicle_1 = __importDefault(require("../routes/vehicle"));
+const orderGroup_1 = __importDefault(require("../routes/orderGroup"));
 class Server {
     constructor() {
         this.apiPaths = {
@@ -28,7 +29,9 @@ class Server {
             workOrderPath: '/api/workorder',
             sparePath: '/api/spare',
             unitPath: '/api/unit',
-            vehiclePath: '/api/vehicle'
+            vehiclePath: '/api/vehicle',
+            orderGroupPath: '/api/ordergroup',
+            spareGroupPath: '/api/spareGroup'
         };
         this.app = (0, express_1.default)();
         this.port = '4000';
@@ -51,8 +54,9 @@ class Server {
         this.app.use(this.apiPaths.workOrderPath, workOder_1.default);
         this.app.use(this.apiPaths.sparePath, spare_1.default);
         this.app.use(this.apiPaths.unitPath, unit_1.default);
-        this.app.use(this.apiPaths.sparePath, spareGroup_1.default);
+        this.app.use(this.apiPaths.spareGroupPath, spareGroup_1.default);
         this.app.use(this.apiPaths.vehiclePath, vehicle_1.default);
+        this.app.use(this.apiPaths.orderGroupPath, orderGroup_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

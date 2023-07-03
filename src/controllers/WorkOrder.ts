@@ -28,11 +28,11 @@ export const getWorkOrder = async (req: Request, res: Response) => {
 }
 
 export const addWorkOrder = async (req: Request, res: Response) => {
-    const { ppu, observations } = req.body
+    const { observations, ot_type, license_vehicle,spares_ids } = req.body
 
     try {
-        const client = await WorkOrder.create({ ppu, observations })
-        res.status(201).json({ client })
+        const workorder = await WorkOrder.create({ observations, ot_type, license_vehicle,spares_ids })
+        res.status(201).json({ workorder })
     } catch (error: any) {
         if (error instanceof SequelizeValidationError) {
             res.status(500).json({ message: error.errors[0].message })

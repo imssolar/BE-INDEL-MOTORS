@@ -14,7 +14,7 @@ const Vehicle_1 = require("../models/Vehicle");
 const getVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("get vehicles");
     try {
-        const vehicles = Vehicle_1.Vehicle.findAll();
+        const vehicles = yield Vehicle_1.Vehicle.findAll();
         res.status(200).json({ vehicles });
     }
     catch (error) {
@@ -23,10 +23,11 @@ const getVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getVehicles = getVehicles;
 const getVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { license_plate } = req.params;
+    console.log("id vehiculo", license_plate);
     try {
-        const vehicle = yield Vehicle_1.Vehicle.findByPk(id);
-        res.status(200).json({ vehicle });
+        const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate);
+        res.status(200).json(vehicle);
     }
     catch (error) {
         res.status(500).json({ message: error });
@@ -45,9 +46,9 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.addVehicle = addVehicle;
 const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { license_plate } = req.params;
     try {
-        const vehicle = yield Vehicle_1.Vehicle.findByPk(id);
+        const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate);
         if (vehicle) {
             vehicle.update({ status: false });
             res.status(200).json({ message: "vehicle updated!" });
@@ -59,10 +60,10 @@ const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.deleteVehicle = deleteVehicle;
 const updateVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const { license_plate, brand, model, year_production, vin_number } = req.body;
+    const { license_plate } = req.params;
+    const { brand, model, year_production, vin_number } = req.body;
     try {
-        Vehicle_1.Vehicle.update({ license_plate, brand, model, year_production, vin_number }, { where: { id } });
+        Vehicle_1.Vehicle.update({ license_plate, brand, model, year_production, vin_number }, { where: { license_plate } });
         res.status(200).json({ message: "Vehicle updated!" });
     }
     catch (error) {

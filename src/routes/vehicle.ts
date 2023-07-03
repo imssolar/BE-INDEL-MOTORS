@@ -5,9 +5,9 @@ import { addVehicle, deleteVehicle, getVehicle, getVehicles, updateVehicle } fro
 const routes = Router()
 
 routes.get('/', getVehicles)
-routes.get('/:rut', getVehicle)
+routes.get('/:license_plate', getVehicle)
 routes.post('/', addVehicle)
-routes.delete('/:rut', deleteVehicle)
-routes.put('/:rut', updateVehicle)
+routes.delete('/:license_plate', deleteVehicle)
+routes.put('/:license_plate', updateVehicle)
 
 export default routes

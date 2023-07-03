@@ -13,26 +13,16 @@ exports.WorkOrder = db_1.sequelize.define('work_order', {
         allowNull: false,
         autoIncrement: true
     },
-    ppu: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
     date: {
         type: sequelize_1.DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     observations: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    ot_type: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    },
 });
-exports.WorkOrder.belongsTo(Vehicle_1.Vehicle);
-exports.WorkOrder.belongsTo(Spare_1.Spare);
-exports.WorkOrder.hasOne(Vehicle_1.Vehicle);
-exports.WorkOrder.hasOne(OrderGroup_1.OrderGroup);
-exports.WorkOrder.hasMany(Spare_1.Spare);
+exports.WorkOrder.belongsTo(Vehicle_1.Vehicle, { foreignKey: 'license_vehicle' });
+exports.WorkOrder.belongsTo(Spare_1.Spare, { foreignKey: 'spares_ids' });
+exports.WorkOrder.belongsTo(OrderGroup_1.OrderGroup, { foreignKey: 'ot_type' });
 //# sourceMappingURL=WorkOrder.js.map

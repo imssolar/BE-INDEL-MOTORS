@@ -35,10 +35,10 @@ const getWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.getWorkOrder = getWorkOrder;
 const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { ppu, observations } = req.body;
+    const { observations, ot_type, license_vehicle, spares_ids } = req.body;
     try {
-        const client = yield WorkOrder_1.WorkOrder.create({ ppu, observations });
-        res.status(201).json({ client });
+        const workorder = yield WorkOrder_1.WorkOrder.create({ observations, ot_type, license_vehicle, spares_ids });
+        res.status(201).json({ workorder });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {

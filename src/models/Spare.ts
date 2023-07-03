@@ -32,5 +32,5 @@ export const Spare = sequelize.define('spare', {
 
 })
 
-Spare.belongsTo(Unit)
-Spare.belongsTo(SpareGroup)
+Spare.belongsTo(Unit,{foreignKey:'unit_id'})
+Spare.belongsTo(SpareGroup,{foreignKey:'spareGroup_id'})

@@ -11,32 +11,23 @@ export const WorkOrder = sequelize.define('work_order', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoIncrement:true
-    },
-    ppu: {
-        type: DataTypes.STRING,
-        allowNull: false
+        autoIncrement: true
     },
     date: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     observations: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    ot_type: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    
+
+
 })
 
 
 
 
-WorkOrder.belongsTo(Vehicle)
-WorkOrder.belongsTo(Spare)
-WorkOrder.hasOne(Vehicle)
-WorkOrder.hasOne(OrderGroup)
-WorkOrder.hasMany(Spare)
+WorkOrder.belongsTo(Vehicle, { foreignKey: 'license_vehicle' })
+WorkOrder.belongsTo(Spare, { foreignKey: 'spares_ids' })
+WorkOrder.belongsTo(OrderGroup, { foreignKey: 'ot_type' })

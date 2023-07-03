@@ -13,7 +13,7 @@ exports.updateUnit = exports.deleteUnit = exports.addUnit = exports.getUnit = ex
 const Unit_1 = require("../models/Unit");
 const getUnits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const units = Unit_1.Unit.findAll();
+        const units = yield Unit_1.Unit.findAll();
         res.status(200).json({ units });
     }
     catch (error) {

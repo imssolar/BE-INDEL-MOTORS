@@ -3,9 +3,10 @@ import { sequelize } from "../db";
 
 export const OrderGroup = sequelize.define('order_group', {
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        autoIncrement:true
     },
     name: {
         type: DataTypes.STRING,

@@ -7,7 +7,7 @@ import { Unit } from "../models/Unit";
 
 export const getUnits = async (req: Request, res: Response) => {
     try {
-        const units = Unit.findAll()
+        const units = await Unit.findAll()
         res.status(200).json({ units })
     } catch (error) {
         res.status(500).json({ message: error })

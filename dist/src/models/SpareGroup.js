@@ -5,9 +5,9 @@ const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
 exports.SpareGroup = db_1.sequelize.define('spare_group', {
     id: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: false
+        autoIncrement: true
     },
     name: {
         type: sequelize_1.DataTypes.STRING,
