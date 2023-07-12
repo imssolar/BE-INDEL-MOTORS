@@ -9,7 +9,7 @@ import vehicleRoutes from '../routes/vehicle'
 import orderGroupsRoutes from '../routes/orderGroup'
 
 
- export class Server {
+export class Server {
 	private app: Application
 	private port: string | undefined
 	private apiPaths = {

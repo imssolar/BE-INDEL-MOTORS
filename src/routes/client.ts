@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { getClients, getClient, addClient, deleteClient, updateClient } from "../controllers/Client";
+import { Router } from 'express'
+import { getClients, getClient, addClient, deleteClient, updateClient } from '../controllers/Client'
 
 //routes puede tener más de dos parámetros, el primero siempre será el path(ruta) y el segundo puede ser un array de middlewares
 const routes = Router()

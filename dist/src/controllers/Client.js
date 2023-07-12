@@ -13,7 +13,7 @@ exports.updateClient = exports.deleteClient = exports.addClient = exports.getCli
 const sequelize_1 = require("sequelize");
 const Client_1 = require("../models/Client");
 const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("get clients");
+    console.log('get clients');
     try {
         const clients = yield Client_1.Client.findAll();
         res.status(200).json(clients);
@@ -24,7 +24,7 @@ const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getClients = getClients;
 const getClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("get client");
+    console.log('get client');
     const { rut } = req.params;
     console.log(rut);
     try {
@@ -69,10 +69,10 @@ const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (client) {
             client.update({ status: false });
         }
-        res.status(200).json({ message: "Client deleted!" });
+        res.status(200).json({ message: 'Client deleted!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.deleteClient = deleteClient;
@@ -81,10 +81,10 @@ const updateClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { names, surnames, cellphone_number, address, district, email } = req.body;
     try {
         Client_1.Client.update({ names, surnames, cellphone_number, address, district, email }, { where: { rut } });
-        res.status(200).json({ message: "Client updated!" });
+        res.status(200).json({ message: 'Client updated!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.updateClient = updateClient;

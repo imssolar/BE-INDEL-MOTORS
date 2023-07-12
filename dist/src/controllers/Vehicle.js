@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateVehicle = exports.deleteVehicle = exports.addVehicle = exports.getVehicle = exports.getVehicles = void 0;
 const Vehicle_1 = require("../models/Vehicle");
 const getVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("get vehicles");
+    console.log('get vehicles');
     try {
         const vehicles = yield Vehicle_1.Vehicle.findAll();
         res.status(200).json({ vehicles });
@@ -24,7 +24,7 @@ const getVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getVehicles = getVehicles;
 const getVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { license_plate } = req.params;
-    console.log("id vehiculo", license_plate);
+    console.log('id vehiculo', license_plate);
     try {
         const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate);
         res.status(200).json(vehicle);
@@ -51,7 +51,7 @@ const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate);
         if (vehicle) {
             vehicle.update({ status: false });
-            res.status(200).json({ message: "vehicle updated!" });
+            res.status(200).json({ message: 'vehicle updated!' });
         }
     }
     catch (error) {
@@ -64,10 +64,10 @@ const updateVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { brand, model, year_production, vin_number } = req.body;
     try {
         Vehicle_1.Vehicle.update({ license_plate, brand, model, year_production, vin_number }, { where: { license_plate } });
-        res.status(200).json({ message: "Vehicle updated!" });
+        res.status(200).json({ message: 'Vehicle updated!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.updateVehicle = updateVehicle;

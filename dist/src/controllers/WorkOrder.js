@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.addWorkOrder = exports.getWorkOrder = exports.getWorkOrders = void 0;
 const WorkOrder_1 = require("../models/WorkOrder");
 const sequelize_1 = require("sequelize");
+const Spare_1 = require("../models/Spare");
 const getWorkOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const wo = yield WorkOrder_1.WorkOrder.findAll();
@@ -37,8 +38,14 @@ exports.getWorkOrder = getWorkOrder;
 const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { observations, ot_type, license_vehicle, spares_ids } = req.body;
     try {
-        const workorder = yield WorkOrder_1.WorkOrder.create({ observations, ot_type, license_vehicle, spares_ids });
-        res.status(201).json({ workorder });
+        const workOrder = yield WorkOrder_1.WorkOrder.create({ observations, ot_type, license_vehicle });
+        const spareInstances = yield Spare_1.Spare.findAll({ where: { id: spares_ids } });
+        if (spareInstances.length !== spares_ids.length) {
+            return res.status(400).json({ message: 'Algún repuesto no existe en la BD' });
+        }
+        const spareIds = spareInstances.map(spare => spare.id).filter((id) => id !== undefined);
+        yield workOrder.addSpares(spareIds);
+        res.status(201).json({ workOrder });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {

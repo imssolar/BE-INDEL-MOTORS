@@ -5,9 +5,7 @@ import { IClient } from '../interfaces/Client'
 /*
 Además pasamos los datos para que puedas usarlos
 */
-interface IClientModel extends Model<IClient>,IClient {
-
-}
+interface IClientModel extends Model<IClient>,IClient {}
 
 
 export const Client = sequelize.define<IClientModel>('client', {

@@ -1,4 +1,4 @@
-import { Client } from "../models/Client";
+import { Client } from '../models/Client'
 
 
 // export const getClientById = async (rut: string) => {

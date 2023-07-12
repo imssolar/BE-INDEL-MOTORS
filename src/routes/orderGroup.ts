@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { addOrderGroup, deleteOrderGroup, getOrderGroup, getOrderGroups, updateOrderGroup } from "../controllers/OrderGroup";
+import { Router } from 'express'
+import { addOrderGroup, deleteOrderGroup, getOrderGroup, getOrderGroups, updateOrderGroup } from '../controllers/OrderGroup'
 
 
 

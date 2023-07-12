@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { addSpareGroup, deleteSpareGroup, getSpareGroup, getSpareGroups, updateSpareGroup } from "../controllers/SpareGroup";
+import { Router } from 'express'
+import { addSpareGroup, deleteSpareGroup, getSpareGroup, getSpareGroups, updateSpareGroup } from '../controllers/SpareGroup'
 
 
 

@@ -49,7 +49,7 @@ const deleteUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const unit = yield Unit_1.Unit.findByPk(id);
         if (unit) {
             unit.update({ status: false });
-            res.status(200).json({ message: "Unit updated!" });
+            res.status(200).json({ message: 'Unit updated!' });
         }
     }
     catch (error) {
@@ -62,10 +62,10 @@ const updateUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { name_unit, description } = req.body;
     try {
         Unit_1.Unit.update({ name_unit, description }, { where: { id } });
-        res.status(200).json({ message: "Client updated!" });
+        res.status(200).json({ message: 'Client updated!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.updateUnit = updateUnit;

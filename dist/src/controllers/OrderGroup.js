@@ -67,10 +67,10 @@ const deleteOrderGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (order) {
             order.update({ status: false });
         }
-        res.status(200).json({ message: "Order deleted!" });
+        res.status(200).json({ message: 'Order deleted!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.deleteOrderGroup = deleteOrderGroup;
@@ -79,10 +79,10 @@ const updateOrderGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const { name } = req.body;
     try {
         OrderGroup_1.OrderGroup.update({ name }, { where: { id } });
-        res.status(200).json({ message: "Client updated!" });
+        res.status(200).json({ message: 'Client updated!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.updateOrderGroup = updateOrderGroup;

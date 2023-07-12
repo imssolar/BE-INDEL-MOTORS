@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { addSpare, deleteSpare, getSpare, getSpares, updateSpare } from "../controllers/Spare";
+import { Router } from 'express'
+import { addSpare, deleteSpare, getSpare, getSpares, updateSpare } from '../controllers/Spare'
 
 const routes = Router()
 

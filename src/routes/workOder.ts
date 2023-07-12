@@ -1,6 +1,6 @@
 
-import { Router } from "express";
-import { addWorkOrder, getWorkOrder, getWorkOrders } from "../controllers/WorkOrder";
+import { Router } from 'express'
+import { addWorkOrder, getWorkOrder, getWorkOrders } from '../controllers/WorkOrder'
 
 
 

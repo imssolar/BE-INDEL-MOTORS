@@ -57,10 +57,10 @@ const deleteSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (group) {
             group.update({ status: false });
         }
-        res.status(200).json({ message: "Spare group deleted!" });
+        res.status(200).json({ message: 'Spare group deleted!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.deleteSpareGroup = deleteSpareGroup;
@@ -69,10 +69,10 @@ const updateSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const { name, description } = req.body;
     try {
         SpareGroup_1.SpareGroup.update({ name, description }, { where: { id } });
-        res.status(200).json({ message: "Spare group updated!" });
+        res.status(200).json({ message: 'Spare group updated!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.updateSpareGroup = updateSpareGroup;

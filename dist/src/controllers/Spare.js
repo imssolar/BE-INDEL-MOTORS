@@ -28,6 +28,7 @@ const getSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(spare);
     }
     catch (error) {
+        console.log(error);
     }
 });
 exports.getSpare = getSpare;
