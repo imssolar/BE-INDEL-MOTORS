@@ -30,4 +30,8 @@ exports.Spare = db_1.sequelize.define('spare', {
 });
 exports.Spare.belongsTo(Unit_1.Unit, { foreignKey: 'unit_id' });
 exports.Spare.belongsTo(SpareGroup_1.SpareGroup, { foreignKey: 'spareGroup_id' });
+// Spare.belongsToMany(WorkOrder, {
+//     through: 'spare',
+//     foreignKey: 'item_id'
+//   });
 //# sourceMappingURL=Spare.js.map

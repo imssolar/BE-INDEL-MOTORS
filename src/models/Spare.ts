@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { DataTypes,Model} from 'sequelize'
 import { sequelize } from '../db'
 import { SpareGroup } from './SpareGroup'
@@ -14,6 +15,13 @@ interface ISpare {
     spareGroup_id?: number
 }
 interface ISpareModel extends Model<ISpare>,ISpare {}
+=======
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db";
+import { SpareGroup } from "./SpareGroup";
+import { Unit } from "./Unit";
+import { WorkOrder } from "./WorkOrder";
+>>>>>>> 7eecde1b686242ea81087487b3f673084a882c89
 
 
 
@@ -47,3 +55,7 @@ export const Spare = sequelize.define<ISpareModel>('spare', {
 
 Spare.belongsTo(Unit,{foreignKey:'unit_id'})
 Spare.belongsTo(SpareGroup,{foreignKey:'spareGroup_id'})
+// Spare.belongsToMany(WorkOrder, {
+//     through: 'spare',
+//     foreignKey: 'item_id'
+//   });
