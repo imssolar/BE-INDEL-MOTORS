@@ -23,6 +23,7 @@ exports.WorkOrder = db_1.sequelize.define('work_order', {
     },
 });
 exports.WorkOrder.belongsTo(Vehicle_1.Vehicle, { foreignKey: 'license_vehicle' });
-exports.WorkOrder.belongsTo(Spare_1.Spare, { foreignKey: 'spares_ids' });
+exports.WorkOrder.belongsToMany(Spare_1.Spare, { through: 'work_order', foreignKey: 'spares_ids' });
 exports.WorkOrder.belongsTo(OrderGroup_1.OrderGroup, { foreignKey: 'ot_type' });
+exports.WorkOrder.hasMany(Spare_1.Spare);
 //# sourceMappingURL=WorkOrder.js.map

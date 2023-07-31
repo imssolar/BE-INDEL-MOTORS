@@ -42,7 +42,7 @@ class Server {
     conectarDB() {
         return __awaiter(this, void 0, void 0, function* () {
             //Cambiar el método sync por un método que sirve para pruebas que lo que hace es borrar la base de datos y ejecutar nuevamente
-            yield db_1.sequelize.sync({ force: true });
+            yield db_1.sequelize.sync();
         });
     }
     middlewares() {

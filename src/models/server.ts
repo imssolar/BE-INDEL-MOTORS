@@ -32,7 +32,7 @@ import orderGroupsRoutes from '../routes/orderGroup'
 
 	async conectarDB() {
 		//Cambiar el método sync por un método que sirve para pruebas que lo que hace es borrar la base de datos y ejecutar nuevamente
-		await sequelize.sync({ force: true })
+		await sequelize.sync()
 	}
 
 	middlewares() {

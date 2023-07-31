@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../db";
 import { SpareGroup } from "./SpareGroup";
 import { Unit } from "./Unit";
+import { WorkOrder } from "./WorkOrder";
 
 
 
@@ -34,3 +35,7 @@ export const Spare = sequelize.define('spare', {
 
 Spare.belongsTo(Unit,{foreignKey:'unit_id'})
 Spare.belongsTo(SpareGroup,{foreignKey:'spareGroup_id'})
+// Spare.belongsToMany(WorkOrder, {
+//     through: 'spare',
+//     foreignKey: 'item_id'
+//   });
