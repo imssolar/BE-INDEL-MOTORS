@@ -30,18 +30,10 @@ export const WorkOrder = sequelize.define('work_order', {
 
 })
 
-
-
-
 WorkOrder.belongsTo(Vehicle, { foreignKey: 'license_vehicle' })
-<<<<<<< HEAD
+// WorkOrder.belongsTo(Spare, { foreignKey: 'spares_ids' })
 WorkOrder.hasMany(Spare, { foreignKey: 'workOrderId', as: 'spares_ids' })
 WorkOrder.belongsTo(OrderGroup, { foreignKey: 'ot_type' })
 
 WorkOrder.belongsToMany(Spare, { through: 'WorkOrderSpare' });
 Spare.belongsToMany(WorkOrder, { through: 'WorkOrderSpare' });
-=======
-WorkOrder.belongsToMany(Spare,{through:'work_order',foreignKey:'spares_ids'})
-WorkOrder.belongsTo(OrderGroup, { foreignKey: 'ot_type' })
-WorkOrder.hasMany(Spare)
->>>>>>> 7eecde1b686242ea81087487b3f673084a882c89

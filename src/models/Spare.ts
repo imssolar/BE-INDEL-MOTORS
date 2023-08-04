@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 import { DataTypes,Model} from 'sequelize'
 import { sequelize } from '../db'
 import { SpareGroup } from './SpareGroup'
 import { Unit } from './Unit'
+import { WorkOrder } from './WorkOrder'
 
 
 interface ISpare {
@@ -15,13 +15,6 @@ interface ISpare {
     spareGroup_id?: number
 }
 interface ISpareModel extends Model<ISpare>,ISpare {}
-=======
-import { DataTypes } from "sequelize";
-import { sequelize } from "../db";
-import { SpareGroup } from "./SpareGroup";
-import { Unit } from "./Unit";
-import { WorkOrder } from "./WorkOrder";
->>>>>>> 7eecde1b686242ea81087487b3f673084a882c89
 
 
 

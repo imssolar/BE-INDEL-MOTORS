@@ -25,14 +25,13 @@ export const getWorkOrder = async (req: Request, res: Response) => {
 
 export const addWorkOrder = async (req: Request, res: Response) => {
 	const { observations, ot_type, license_vehicle,spares_ids } = req.body
-
 	try {
 		const workOrder = await WorkOrder.create({ observations, ot_type, license_vehicle })
 		const spareInstances = await Spare.findAll({ where: { id: spares_ids } })
 		if (spareInstances.length !== spares_ids.length) {
 			return res.status(400).json({ message: 'Algún repuesto no existe en la BD' })
 		}
-		const spareIds = spareInstances.map(spare => spare.id).filter((id): id is number => id !== undefined);
+		const spareIds = spareInstances.map(spare => spare.id).filter((id): id is number => id !== undefined)
 		await (workOrder as WorkOrderInstance).addSpares(spareIds)
 		res.status(201).json({ workOrder })
 	} catch (error: any) {
