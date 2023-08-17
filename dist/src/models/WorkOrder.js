@@ -26,6 +26,7 @@ exports.WorkOrder.belongsTo(Vehicle_1.Vehicle, { foreignKey: 'license_vehicle' }
 // WorkOrder.belongsTo(Spare, { foreignKey: 'spares_ids' })
 exports.WorkOrder.hasMany(Spare_1.Spare, { foreignKey: 'workOrderId', as: 'spares_ids' });
 exports.WorkOrder.belongsTo(OrderGroup_1.OrderGroup, { foreignKey: 'ot_type' });
-exports.WorkOrder.belongsToMany(Spare_1.Spare, { through: 'WorkOrderSpare' });
-Spare_1.Spare.belongsToMany(exports.WorkOrder, { through: 'WorkOrderSpare' });
+/*Tratar de cambiar nombre a minúscula*/
+exports.WorkOrder.belongsToMany(Spare_1.Spare, { as: 'spares', through: 'workorderspare' });
+Spare_1.Spare.belongsToMany(exports.WorkOrder, { as: 'orders', through: 'workorderspare' });
 //# sourceMappingURL=WorkOrder.js.map

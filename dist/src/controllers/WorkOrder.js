@@ -13,9 +13,10 @@ exports.addWorkOrder = exports.getWorkOrder = exports.getWorkOrders = void 0;
 const WorkOrder_1 = require("../models/WorkOrder");
 const sequelize_1 = require("sequelize");
 const Spare_1 = require("../models/Spare");
+/*se deben recuperar los spare  */
 const getWorkOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const wo = yield WorkOrder_1.WorkOrder.findAll();
+        const wo = yield WorkOrder_1.WorkOrder.findAll({ include: { model: Spare_1.Spare, as: 'spares' } });
         res.status(200).json(wo);
     }
     catch (error) {
@@ -27,7 +28,7 @@ const getWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { id } = req.params;
     console.log(id);
     try {
-        const wo = yield WorkOrder_1.WorkOrder.findByPk(id);
+        const wo = yield WorkOrder_1.WorkOrder.findByPk(id, { include: { model: Spare_1.Spare, as: 'spares' } });
         res.status(200).json(wo);
     }
     catch (error) {
@@ -37,6 +38,9 @@ const getWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getWorkOrder = getWorkOrder;
 const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { observations, ot_type, license_vehicle, spares_ids } = req.body;
+    console.log(observations);
+    console.log(ot_type);
+    console.log(spares_ids);
     try {
         const workOrder = yield WorkOrder_1.WorkOrder.create({ observations, ot_type, license_vehicle });
         const spareInstances = yield Spare_1.Spare.findAll({ where: { id: spares_ids } });

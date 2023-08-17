@@ -3,9 +3,11 @@ import { WorkOrder, WorkOrderInstance } from '../models/WorkOrder'
 import { ValidationError as SequelizeValidationError } from 'sequelize'
 import { Spare } from '../models/Spare'
 
+/*se deben recuperar los spare  */
+
 export const getWorkOrders = async (req: Request, res: Response) => {
 	try {
-		const wo = await WorkOrder.findAll()
+		const wo = await WorkOrder.findAll({include:{model:Spare,as:'spares'}})
 		res.status(200).json(wo)
 	} catch (error: any) {
 		res.status(500).json({ message: error.message })
@@ -16,7 +18,7 @@ export const getWorkOrder = async (req: Request, res: Response) => {
 	const { id } = req.params
 	console.log(id)
 	try {
-		const wo = await WorkOrder.findByPk(id)
+		const wo = await WorkOrder.findByPk(id, {include:{model:Spare,as:'spares'}})
 		res.status(200).json(wo)
 	} catch (error: any) {
 		res.status(500).json({ message: error })
@@ -25,6 +27,9 @@ export const getWorkOrder = async (req: Request, res: Response) => {
 
 export const addWorkOrder = async (req: Request, res: Response) => {
 	const { observations, ot_type, license_vehicle,spares_ids } = req.body
+	console.log(observations)
+	console.log(ot_type)
+	console.log(spares_ids)
 	try {
 		const workOrder = await WorkOrder.create({ observations, ot_type, license_vehicle })
 		const spareInstances = await Spare.findAll({ where: { id: spares_ids } })

@@ -16,9 +16,7 @@ export const getClients = async (req: Request, res: Response) => {
 }
 
 export const getClient = async (req: Request, res: Response) => {
-	console.log('get client')
 	const { rut } = req.params
-	console.log(rut)
 	try {
 		const client = await Client.findByPk(rut)
 		res.status(200).json(client)

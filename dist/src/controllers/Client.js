@@ -24,9 +24,7 @@ const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getClients = getClients;
 const getClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('get client');
     const { rut } = req.params;
-    console.log(rut);
     try {
         const client = yield Client_1.Client.findByPk(rut);
         res.status(200).json(client);
