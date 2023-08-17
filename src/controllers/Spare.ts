@@ -5,7 +5,7 @@ import { Spare } from '../models/Spare'
 
 export const getSpares = async (req: Request, res: Response) => {
 	try {
-		const spares = Spare.findAll()
+		const spares = await Spare.findAll()
 		res.status(200).json(spares)
 	} catch (error: any) {
 		res.status(500).json({ message: error.message })
@@ -16,7 +16,7 @@ export const getSpare = async (req: Request, res: Response) => {
 	const { id } = req.params
 
 	try {
-		const spare = Spare.findByPk(id)
+		const spare = await Spare.findByPk(id)
 		res.status(200).json(spare)
 	} catch (error) {
 		console.log(error)

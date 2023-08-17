@@ -13,7 +13,7 @@ exports.updateSpare = exports.deleteSpare = exports.addSpare = exports.getSpare 
 const Spare_1 = require("../models/Spare");
 const getSpares = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const spares = Spare_1.Spare.findAll();
+        const spares = yield Spare_1.Spare.findAll();
         res.status(200).json(spares);
     }
     catch (error) {
@@ -24,7 +24,7 @@ exports.getSpares = getSpares;
 const getSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const spare = Spare_1.Spare.findByPk(id);
+        const spare = yield Spare_1.Spare.findByPk(id);
         res.status(200).json(spare);
     }
     catch (error) {
