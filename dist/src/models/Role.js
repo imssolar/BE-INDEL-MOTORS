@@ -6,7 +6,8 @@ const db_1 = require("../db");
 exports.Role = db_1.sequelize.define('role', {
     name: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     description: {
         type: sequelize_1.DataTypes.STRING
