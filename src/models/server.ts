@@ -9,6 +9,7 @@ import vehicleRoutes from '../routes/vehicle'
 import orderGroupsRoutes from '../routes/orderGroup'
 import userRoutes from '../routes/users'
 import roleRoutes from '../routes/role'
+import authRoutes from '../routes/auth'
 
 export class Server {
 	private app: Application
@@ -22,7 +23,8 @@ export class Server {
 		orderGroupPath: '/api/ordergroup',
 		spareGroupPath: '/api/spareGroup',
 		userPath: '/api/user',
-		rolePath: '/api/role'
+		rolePath: '/api/role',
+		authPath: '/api/auth'
 	}
 	constructor() {
 		this.app = express()
@@ -53,6 +55,7 @@ export class Server {
 		this.app.use(this.apiPaths.orderGroupPath, orderGroupsRoutes)
 		this.app.use(this.apiPaths.userPath, userRoutes)
 		this.app.use(this.apiPaths.rolePath, roleRoutes)
+		this.app.use(this.apiPaths.authPath,authRoutes)
 	}
 
 	listen() {

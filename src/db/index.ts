@@ -1,8 +1,8 @@
 import { Sequelize } from 'sequelize'
 
 
-export const sequelize = new Sequelize('carRepair', 'postgres', '1125', {
+export const sequelize = new Sequelize('car_repair', 'root', 'Modular.2023@', {
 	host: 'localhost',
-	dialect: 'postgres'
+	dialect: 'mysql'
 })
 
