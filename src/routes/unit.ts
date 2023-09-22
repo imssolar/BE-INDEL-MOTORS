@@ -3,9 +3,16 @@ import { addUnit, deleteUnit, getUnit, getUnits, updateUnit } from '../controlle
 
 
 
-
 const routes = Router()
-
+/**
+ * @swagger
+ * /api/unit/:
+ *   get:
+ *     summary: Obtiene las unidades.
+ *     responses:
+ *       '200':
+ *         description: OK.
+ */
 routes.get('/', getUnits)
 routes.get('/:id', getUnit)
 routes.post('/', addUnit)

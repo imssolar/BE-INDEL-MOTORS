@@ -39,6 +39,7 @@ crear error personalizado
 */
 const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut, names, surnames, cellphone_number, address, district, email } = req.body;
+    console.log(req);
     try {
         const client = yield Client_1.Client.create({ rut, names, surnames, cellphone_number, district, address, email });
         res.status(201).json({ client });

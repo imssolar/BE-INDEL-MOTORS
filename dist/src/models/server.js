@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
 const express_1 = __importDefault(require("express"));
 const db_1 = require("../db");
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const client_1 = __importDefault(require("../routes/client"));
 const workOder_1 = __importDefault(require("../routes/workOder"));
 const spare_1 = __importDefault(require("../routes/spare"));
@@ -25,22 +27,34 @@ const orderGroup_1 = __importDefault(require("../routes/orderGroup"));
 const users_1 = __importDefault(require("../routes/users"));
 const role_1 = __importDefault(require("../routes/role"));
 const auth_1 = __importDefault(require("../routes/auth"));
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Mi API",
+            version: "1.0.0",
+            description: "doc",
+        },
+    },
+    apis: ["./src/routes/*.ts"],
+};
 class Server {
     constructor() {
+        this.swaggerSpec = (0, swagger_jsdoc_1.default)(swaggerOptions);
         this.apiPaths = {
-            accountsPath: '/api/account',
-            workOrderPath: '/api/workorder',
-            sparePath: '/api/spare',
-            unitPath: '/api/unit',
-            vehiclePath: '/api/vehicle',
-            orderGroupPath: '/api/ordergroup',
-            spareGroupPath: '/api/spareGroup',
-            userPath: '/api/user',
-            rolePath: '/api/role',
-            authPath: '/api/auth'
+            accountsPath: "/api/account",
+            workOrderPath: "/api/workorder",
+            sparePath: "/api/spare",
+            unitPath: "/api/unit",
+            vehiclePath: "/api/vehicle",
+            orderGroupPath: "/api/ordergroup",
+            spareGroupPath: "/api/spareGroup",
+            userPath: "/api/user",
+            rolePath: "/api/role",
+            authPath: "/api/auth",
         };
         this.app = (0, express_1.default)();
-        this.port = '4000';
+        this.port = "4000";
         this.conectarDB();
         this.middlewares();
         this.routes();
@@ -66,6 +80,7 @@ class Server {
         this.app.use(this.apiPaths.userPath, users_1.default);
         this.app.use(this.apiPaths.rolePath, role_1.default);
         this.app.use(this.apiPaths.authPath, auth_1.default);
+        this.app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(this.swaggerSpec));
     }
     listen() {
         this.app.listen(this.port, () => {

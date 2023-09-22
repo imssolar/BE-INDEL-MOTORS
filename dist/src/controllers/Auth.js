@@ -15,7 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Login = void 0;
 const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const generateJWT_1 = require("../utils/generateJWT");
+const express_validator_1 = require("express-validator");
 const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const checkErrors = (0, express_validator_1.validationResult)(req);
+    if (!checkErrors.isEmpty()) {
+        const mapErrors = checkErrors.array();
+        return res.status(400).json({ errores: mapErrors });
+    }
     const { email, password } = req.body;
     try {
         const findUser = yield User_1.User.findByPk(email);
@@ -26,10 +33,12 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!isValidPassword) {
             return res.status(400).json({ message: "El password es incorrecto" });
         }
-        return res.status(200).json({ message: "Login exitoso" });
+        const generateResponse = yield (0, generateJWT_1.generateJWT)(findUser.email);
+        return res
+            .status(200)
+            .json({ message: "Login exitoso", token: generateResponse });
     }
-    catch (error) {
-    }
+    catch (error) { }
 });
 exports.Login = Login;
 //# sourceMappingURL=Auth.js.map
