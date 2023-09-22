@@ -5,31 +5,31 @@ const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
 const SpareGroup_1 = require("./SpareGroup");
 const Unit_1 = require("./Unit");
-exports.Spare = db_1.sequelize.define('spare', {
+exports.Spare = db_1.sequelize.define("spare", {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
     },
     name: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     cost: {
         type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
     stock: {
         type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
     status: {
         type: sequelize_1.DataTypes.BOOLEAN,
-        defaultValue: true
-    }
+        defaultValue: true,
+    },
 });
-exports.Spare.belongsTo(Unit_1.Unit, { foreignKey: 'unit_id' });
-exports.Spare.belongsTo(SpareGroup_1.SpareGroup, { foreignKey: 'spareGroup_id' });
+exports.Spare.belongsTo(Unit_1.Unit, { foreignKey: "unit_id" });
+exports.Spare.belongsTo(SpareGroup_1.SpareGroup, { foreignKey: "spareGroup_id" });
 // Spare.belongsToMany(WorkOrder, {
 //     through: 'spare',
 //     foreignKey: 'item_id'

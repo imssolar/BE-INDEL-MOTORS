@@ -29,7 +29,7 @@ crear error personalizado
 */
 export const addClient = async (req: Request, res: Response) => {
 	const { rut, names, surnames, cellphone_number, address, district, email } = req.body
-
+	console.log(req)
 	try {
 		const client = await Client.create({ rut, names, surnames, cellphone_number, district, address, email })
 		res.status(201).json({ client })
