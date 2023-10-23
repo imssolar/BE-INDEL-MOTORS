@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Login } from "../controllers/Auth";
+import { Login, getUserByToken } from "../controllers/Auth";
 import { validateJWT } from "../middlewares/JWTValidate";
 import { check } from "express-validator";
 
@@ -37,7 +37,10 @@ const routes = Router();
 *        in: header
 *        name: appkey    
 *      
-*/
+*/routes.get('/',[validateJWT],getUserByToken)
+
+
+
 routes.post(
   "/login",
   [

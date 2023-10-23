@@ -13,6 +13,7 @@ import orderGroupsRoutes from "../routes/orderGroup";
 import userRoutes from "../routes/users";
 import roleRoutes from "../routes/role";
 import authRoutes from "../routes/auth";
+import cors from 'cors'
 
 const swaggerOptions: Options = {
   swaggerDefinition: {
@@ -56,7 +57,7 @@ export class Server {
   }
 
   middlewares() {
-    // this.app.use(cors())
+    this.app.use(cors())
     this.app.use(express.json());
   }
 

@@ -24,6 +24,7 @@ export const validateJWT = async (
   try {
     const verifyJWT: Ijwt = jwt.verify(token, secret) as Ijwt;
     const verifyUser = await User.findByPk(verifyJWT.id);
+    //crear objeto custom y enviar solo lo de datavalues (sin password ni los created)
     if (!verifyUser)
       return response.status(401).json({ message: "Usuario no encontrado!" });
     (<RequestUser>request).user = verifyUser;

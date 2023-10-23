@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Login = void 0;
+exports.getUserByToken = exports.Login = void 0;
 const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const generateJWT_1 = require("../utils/generateJWT");
@@ -23,22 +23,31 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const mapErrors = checkErrors.array();
         return res.status(400).json({ errores: mapErrors });
     }
-    const { email, password } = req.body;
+    const { email, password: pass } = req.body;
     try {
         const findUser = yield User_1.User.findByPk(email);
         if (!findUser) {
             return res.status(400).json({ message: "El email no está registrado" });
         }
-        const isValidPassword = bcryptjs_1.default.compareSync(password, findUser.password);
+        const isValidPassword = bcryptjs_1.default.compareSync(pass, findUser.password);
         if (!isValidPassword) {
             return res.status(400).json({ message: "El password es incorrecto" });
         }
         const generateResponse = yield (0, generateJWT_1.generateJWT)(findUser.email);
+        const { name, last_name, email: email_user, roleName, enabled } = findUser;
         return res
             .status(200)
-            .json({ message: "Login exitoso", token: generateResponse });
+            .json({
+            message: "Login exitoso",
+            token: generateResponse,
+            user: { name, last_name, email: email_user, roleName, enabled },
+        });
     }
     catch (error) { }
 });
 exports.Login = Login;
+const getUserByToken = (req, res) => {
+    console.log(req);
+};
+exports.getUserByToken = getUserByToken;
 //# sourceMappingURL=Auth.js.map

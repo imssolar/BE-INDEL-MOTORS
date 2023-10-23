@@ -24,6 +24,7 @@ const validateJWT = (request, response, next) => __awaiter(void 0, void 0, void 
     try {
         const verifyJWT = jsonwebtoken_1.default.verify(token, secret);
         const verifyUser = yield User_1.User.findByPk(verifyJWT.id);
+        //crear objeto custom y enviar solo lo de datavalues (sin password ni los created)
         if (!verifyUser)
             return response.status(401).json({ message: "Usuario no encontrado!" });
         request.user = verifyUser;

@@ -27,6 +27,7 @@ const orderGroup_1 = __importDefault(require("../routes/orderGroup"));
 const users_1 = __importDefault(require("../routes/users"));
 const role_1 = __importDefault(require("../routes/role"));
 const auth_1 = __importDefault(require("../routes/auth"));
+const cors_1 = __importDefault(require("cors"));
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: "3.0.0",
@@ -66,7 +67,7 @@ class Server {
         });
     }
     middlewares() {
-        // this.app.use(cors())
+        this.app.use((0, cors_1.default)());
         this.app.use(express_1.default.json());
     }
     routes() {
