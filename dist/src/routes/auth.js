@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Auth_1 = require("../controllers/Auth");
+const JWTValidate_1 = require("../middlewares/JWTValidate");
 const express_validator_1 = require("express-validator");
 const routes = (0, express_1.Router)();
 /**
@@ -37,7 +38,7 @@ const routes = (0, express_1.Router)();
 *        in: header
 *        name: appkey
 *
-*/
+*/ routes.get('/', [JWTValidate_1.validateJWT], Auth_1.getUserByToken);
 routes.post("/login", [
     (0, express_validator_1.check)("email")
         .isEmail()
