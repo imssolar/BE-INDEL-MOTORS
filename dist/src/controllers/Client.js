@@ -13,7 +13,7 @@ exports.updateClient = exports.deleteClient = exports.addClient = exports.getCli
 const sequelize_1 = require("sequelize");
 const Client_1 = require("../models/Client");
 const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('get clients');
+    console.log("get clients");
     try {
         const clients = yield Client_1.Client.findAll();
         res.status(200).json(clients);
@@ -27,10 +27,18 @@ const getClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut } = req.params;
     try {
         const client = yield Client_1.Client.findByPk(rut);
-        res.status(200).json(client);
+        if (!client) {
+            const resp = {
+                message: "El cliente no se encuentra en la base de datos",
+                type: "notFound",
+            };
+            res.status(200).json(resp);
+            return;
+        }
+        res.status(200).json({ client });
     }
     catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message, type: "error" });
     }
 });
 exports.getClient = getClient;
@@ -39,17 +47,31 @@ crear error personalizado
 */
 const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut, names, surnames, cellphone_number, address, district, email } = req.body;
-    console.log(req);
     try {
-        const client = yield Client_1.Client.create({ rut, names, surnames, cellphone_number, district, address, email });
-        res.status(201).json({ client });
+        const findClient = yield Client_1.Client.findByPk(rut);
+        if (findClient) {
+            res.status(400).json({
+                message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
+            });
+            return;
+        }
+        const client = yield Client_1.Client.create({
+            rut,
+            names,
+            surnames,
+            cellphone_number,
+            district,
+            address,
+            email,
+        });
+        res.status(201).json({ message: "Cliente creado correctamente", client });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {
             res.status(500).json({ message: error.errors[0].message });
         }
         else {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message, type: "error" });
         }
     }
 });
@@ -65,13 +87,19 @@ const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { rut } = req.params;
     try {
         const client = yield Client_1.Client.findByPk(rut);
-        if (client) {
-            client.update({ status: false });
+        if (!client) {
+            res.status(400).json({
+                message: "El cliente a eliminar no se encuentra en la base de datos",
+            });
+            return;
         }
-        res.status(200).json({ message: 'Client deleted!' });
+        client.destroy();
+        res.status(200).json({
+            message: `El cliente con el rut ${client.rut} ha sido eliminado`,
+        });
     }
     catch (error) {
-        res.status(500).json({ message: 'error' });
+        res.status(500).json({ message: error.message, type: "error" });
     }
 });
 exports.deleteClient = deleteClient;
@@ -79,11 +107,20 @@ const updateClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { rut } = req.params;
     const { names, surnames, cellphone_number, address, district, email } = req.body;
     try {
+        const client = yield Client_1.Client.findByPk(rut);
+        if (!client) {
+            res
+                .status(400)
+                .json({ message: "El cliente no se encuentra en la base de datos" });
+            return;
+        }
         Client_1.Client.update({ names, surnames, cellphone_number, address, district, email }, { where: { rut } });
-        res.status(200).json({ message: 'Client updated!' });
+        res
+            .status(200)
+            .json({ message: "El cliente ha sido actualizado correctamente" });
     }
     catch (error) {
-        res.status(500).json({ message: 'error' });
+        res.status(500).json({ message: error.message, type: "error" });
     }
 });
 exports.updateClient = updateClient;

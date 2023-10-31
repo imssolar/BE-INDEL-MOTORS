@@ -28,13 +28,6 @@ exports.Client = db_1.sequelize.define('client', {
     email: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
-    },
-    status: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        defaultValue: true
-    },
-    status_description: {
-        type: sequelize_1.DataTypes.STRING
     }
     /*agregar status y una descripcion*/
 }, {

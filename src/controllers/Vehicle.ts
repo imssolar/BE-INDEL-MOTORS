@@ -26,9 +26,9 @@ export const getVehicle = async (req: Request, res: Response) => {
 
 export const addVehicle = async (req: Request, res: Response) => {
 
-	const { license_plate, brand,model,year_production,vin_number } = req.body
+	const { license_plate, brand,model,year_production,vin_number,rut_client } = req.body
 	try {
-		const vehicleToCreate = await Vehicle.create({ license_plate, brand,model,year_production,vin_number})
+		const vehicleToCreate = await Vehicle.create({ license_plate, brand,model,year_production,vin_number,rut_client})
 		res.status(200).json({ vehicleToCreate })
 
 	} catch (error) {

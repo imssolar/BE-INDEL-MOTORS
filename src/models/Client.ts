@@ -36,14 +36,6 @@ export const Client = sequelize.define<IClientModel>('client', {
 	email: {
 		type: DataTypes.STRING,
 		allowNull: false
-	},
-	status: {
-		type: DataTypes.BOOLEAN,
-		defaultValue: true
-
-	},
-	status_description: {
-		type: DataTypes.STRING
 	}
 
 	/*agregar status y una descripcion*/
