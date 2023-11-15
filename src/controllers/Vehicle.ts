@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { Vehicle } from '../models/Vehicle'
+import { Client } from '../models/Client'
 
 
 
@@ -17,8 +18,8 @@ export const getVehicle = async (req: Request, res: Response) => {
 	const { license_plate } = req.params
 	console.log('id vehiculo',license_plate)
 	try {
-		const vehicle = await Vehicle.findByPk(license_plate)
-		res.status(200).json( vehicle )
+		const vehicle = await Vehicle.findByPk(license_plate,{include:{model:Client,as:'client'}})
+		res.status(200).json( {vehicle} )
 	} catch (error) {
 		res.status(500).json({ message: error })
 	}

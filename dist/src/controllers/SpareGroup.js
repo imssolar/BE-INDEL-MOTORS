@@ -23,11 +23,20 @@ const getSpareGroups = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getSpareGroups = getSpareGroups;
 const getSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    console.log(id);
+    const { name } = req.params;
+    console.log(name);
     try {
-        const group = yield SpareGroup_1.SpareGroup.findByPk(id);
-        res.status(200).json(group);
+        const sparegroup = yield SpareGroup_1.SpareGroup.findOne({
+            where: { name: `${name}` },
+        });
+        if (!sparegroup) {
+            res.status(400).json({
+                message: `El grupo de repuesto con el nombre ${name} no se encuentra en la base de datos`,
+                type: "notFound",
+            });
+            return;
+        }
+        res.status(200).json(sparegroup);
     }
     catch (error) {
         res.status(500).json({ message: error });
@@ -37,8 +46,22 @@ exports.getSpareGroup = getSpareGroup;
 const addSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, description } = req.body;
     try {
+        //Esto debe ser mayuscula o minuscula
+        const isSpareGroupCreated = yield SpareGroup_1.SpareGroup.findOne({
+            where: { name: `${name}` },
+        });
+        if (isSpareGroupCreated) {
+            res.status(400).json({
+                message: `El grupo de repuesto con el nombre ${name} ya se encuentra en la base de datos`,
+                type: "error",
+            });
+            return;
+        }
         const group = yield SpareGroup_1.SpareGroup.create({ name, description });
-        res.status(201).json({ group });
+        res.status(201).json({
+            message: "Grupo de repuesto creado correctamente",
+            type: "info",
+        });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {
@@ -57,10 +80,10 @@ const deleteSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (group) {
             group.update({ status: false });
         }
-        res.status(200).json({ message: 'Spare group deleted!' });
+        res.status(200).json({ message: "Spare group deleted!" });
     }
     catch (error) {
-        res.status(500).json({ message: 'error' });
+        res.status(500).json({ message: "error" });
     }
 });
 exports.deleteSpareGroup = deleteSpareGroup;
@@ -69,10 +92,10 @@ const updateSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const { name, description } = req.body;
     try {
         SpareGroup_1.SpareGroup.update({ name, description }, { where: { id } });
-        res.status(200).json({ message: 'Spare group updated!' });
+        res.status(200).json({ message: "Spare group updated!" });
     }
     catch (error) {
-        res.status(500).json({ message: 'error' });
+        res.status(500).json({ message: "error" });
     }
 });
 exports.updateSpareGroup = updateSpareGroup;

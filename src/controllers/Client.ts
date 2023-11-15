@@ -6,9 +6,9 @@ import {
 import { Client } from "../models/Client";
 import { MessageType } from "../utils/typeMessage";
 
-interface ResponseMessage{
-  message:string,
-  type:MessageType
+interface ResponseMessage {
+  message: string;
+  type: MessageType;
 }
 
 export const getClients = async (req: Request, res: Response) => {
@@ -26,10 +26,10 @@ export const getClient = async (req: Request, res: Response) => {
   try {
     const client = await Client.findByPk(rut);
     if (!client) {
-      const resp:ResponseMessage = {
-      message: "El cliente no se encuentra en la base de datos",
-      type: "notFound",
-    }
+      const resp: ResponseMessage = {
+        message: "El cliente no se encuentra en la base de datos",
+        type: "notFound",
+      };
       res.status(200).json(resp);
       return;
     }
@@ -49,6 +49,7 @@ export const addClient = async (req: Request, res: Response) => {
     if (findClient) {
       res.status(400).json({
         message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
+        type: "error",
       });
       return;
     }
@@ -61,7 +62,9 @@ export const addClient = async (req: Request, res: Response) => {
       address,
       email,
     });
-    res.status(201).json({ message: "Cliente creado correctamente", client });
+    res
+      .status(201)
+      .json({ message: "Cliente creado correctamente", type: "info" });
   } catch (error: any) {
     if (error instanceof SequelizeValidationError) {
       res.status(500).json({ message: error.errors[0].message });
@@ -86,6 +89,7 @@ export const deleteClient = async (req: Request, res: Response) => {
     if (!client) {
       res.status(400).json({
         message: "El cliente a eliminar no se encuentra en la base de datos",
+        type: "error",
       });
       return;
     }
@@ -93,7 +97,7 @@ export const deleteClient = async (req: Request, res: Response) => {
     res.status(200).json({
       message: `El cliente con el rut ${client.rut} ha sido eliminado`,
     });
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message, type: "error" });
   }
 };
@@ -106,9 +110,10 @@ export const updateClient = async (req: Request, res: Response) => {
   try {
     const client = await Client.findByPk(rut);
     if (!client) {
-      res
-        .status(400)
-        .json({ message: "El cliente no se encuentra en la base de datos" });
+      res.status(400).json({
+        message: "El cliente no se encuentra en la base de datos",
+        type: "error",
+      });
       return;
     }
     Client.update(
@@ -117,8 +122,11 @@ export const updateClient = async (req: Request, res: Response) => {
     );
     res
       .status(200)
-      .json({ message: "El cliente ha sido actualizado correctamente" });
-  } catch (error:any) {
+      .json({
+        message: `El cliente con el rut ${rut} ha sido actualizado correctamente`,
+        type: "info",
+      });
+  } catch (error: any) {
     res.status(500).json({ message: error.message, type: "error" });
   }
 };

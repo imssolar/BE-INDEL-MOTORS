@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateVehicle = exports.deleteVehicle = exports.addVehicle = exports.getVehicle = exports.getVehicles = void 0;
 const Vehicle_1 = require("../models/Vehicle");
+const Client_1 = require("../models/Client");
 const getVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('get vehicles');
     try {
@@ -26,8 +27,8 @@ const getVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { license_plate } = req.params;
     console.log('id vehiculo', license_plate);
     try {
-        const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate);
-        res.status(200).json(vehicle);
+        const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate, { include: { model: Client_1.Client, as: 'client' } });
+        res.status(200).json({ vehicle });
     }
     catch (error) {
         res.status(500).json({ message: error });

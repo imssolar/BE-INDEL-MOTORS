@@ -52,6 +52,7 @@ const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (findClient) {
             res.status(400).json({
                 message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
+                type: "error",
             });
             return;
         }
@@ -64,7 +65,9 @@ const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             address,
             email,
         });
-        res.status(201).json({ message: "Cliente creado correctamente", client });
+        res
+            .status(201)
+            .json({ message: "Cliente creado correctamente", type: "info" });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {
@@ -90,6 +93,7 @@ const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (!client) {
             res.status(400).json({
                 message: "El cliente a eliminar no se encuentra en la base de datos",
+                type: "error",
             });
             return;
         }
@@ -109,15 +113,19 @@ const updateClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const client = yield Client_1.Client.findByPk(rut);
         if (!client) {
-            res
-                .status(400)
-                .json({ message: "El cliente no se encuentra en la base de datos" });
+            res.status(400).json({
+                message: "El cliente no se encuentra en la base de datos",
+                type: "error",
+            });
             return;
         }
         Client_1.Client.update({ names, surnames, cellphone_number, address, district, email }, { where: { rut } });
         res
             .status(200)
-            .json({ message: "El cliente ha sido actualizado correctamente" });
+            .json({
+            message: `El cliente con el rut ${rut} ha sido actualizado correctamente`,
+            type: "info",
+        });
     }
     catch (error) {
         res.status(500).json({ message: error.message, type: "error" });
