@@ -27,6 +27,7 @@ const orderGroup_1 = __importDefault(require("../routes/orderGroup"));
 const users_1 = __importDefault(require("../routes/users"));
 const role_1 = __importDefault(require("../routes/role"));
 const auth_1 = __importDefault(require("../routes/auth"));
+const brand_1 = __importDefault(require("../routes/brand"));
 const cors_1 = __importDefault(require("cors"));
 const swaggerOptions = {
     swaggerDefinition: {
@@ -53,6 +54,7 @@ class Server {
             userPath: "/api/user",
             rolePath: "/api/role",
             authPath: "/api/auth",
+            brandPath: "/api/brand"
         };
         this.app = (0, express_1.default)();
         this.port = "4000";
@@ -81,6 +83,7 @@ class Server {
         this.app.use(this.apiPaths.userPath, users_1.default);
         this.app.use(this.apiPaths.rolePath, role_1.default);
         this.app.use(this.apiPaths.authPath, auth_1.default);
+        this.app.use(this.apiPaths.brandPath, brand_1.default);
         this.app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(this.swaggerSpec));
     }
     listen() {
