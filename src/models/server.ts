@@ -13,6 +13,7 @@ import orderGroupsRoutes from "../routes/orderGroup";
 import userRoutes from "../routes/users";
 import roleRoutes from "../routes/role";
 import authRoutes from "../routes/auth";
+import brandRoutes from "../routes/brand"
 import cors from 'cors'
 
 const swaggerOptions: Options = {
@@ -42,6 +43,7 @@ export class Server {
     userPath: "/api/user",
     rolePath: "/api/role",
     authPath: "/api/auth",
+    brandPath:"/api/brand"
   };
   constructor() {
     this.app = express();
@@ -72,6 +74,7 @@ export class Server {
     this.app.use(this.apiPaths.userPath, userRoutes);
     this.app.use(this.apiPaths.rolePath, roleRoutes);
     this.app.use(this.apiPaths.authPath, authRoutes);
+    this.app.use(this.apiPaths.brandPath,brandRoutes)
     this.app.use(
       "/api-docs",
       swaggerui.serve,
