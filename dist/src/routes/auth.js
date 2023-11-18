@@ -39,13 +39,13 @@ const routes = (0, express_1.Router)();
 *        name: appkey
 *
 */ routes.get('/', [JWTValidate_1.validateJWT], Auth_1.getUserByToken);
-routes.post("/login", [
-    (0, express_validator_1.check)("email")
+routes.post('/login', [
+    (0, express_validator_1.check)('email')
         .isEmail()
-        .withMessage("El email no tiene el formato correcto"),
-    (0, express_validator_1.check)("password")
+        .withMessage('El email no tiene el formato correcto'),
+    (0, express_validator_1.check)('password')
         .isLength({ min: 4 })
-        .withMessage("La contraseña debe tener al menos 6 caracteres"),
+        .withMessage('La contraseña debe tener al menos 6 caracteres'),
 ], Auth_1.Login);
 exports.default = routes;
 //# sourceMappingURL=auth.js.map

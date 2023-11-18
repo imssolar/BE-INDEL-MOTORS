@@ -32,7 +32,7 @@ const getSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!sparegroup) {
             res.status(400).json({
                 message: `El grupo de repuesto con el nombre ${name} no se encuentra en la base de datos`,
-                type: "notFound",
+                type: 'notFound',
             });
             return;
         }
@@ -53,14 +53,14 @@ const addSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (isSpareGroupCreated) {
             res.status(400).json({
                 message: `El grupo de repuesto con el nombre ${name} ya se encuentra en la base de datos`,
-                type: "error",
+                type: 'error',
             });
             return;
         }
         const group = yield SpareGroup_1.SpareGroup.create({ name, description });
         res.status(201).json({
-            message: "Grupo de repuesto creado correctamente",
-            type: "info",
+            message: 'Grupo de repuesto creado correctamente',
+            type: 'info',
         });
     }
     catch (error) {
@@ -80,10 +80,10 @@ const deleteSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (group) {
             group.update({ status: false });
         }
-        res.status(200).json({ message: "Spare group deleted!" });
+        res.status(200).json({ message: 'Spare group deleted!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.deleteSpareGroup = deleteSpareGroup;
@@ -92,10 +92,10 @@ const updateSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const { name, description } = req.body;
     try {
         SpareGroup_1.SpareGroup.update({ name, description }, { where: { id } });
-        res.status(200).json({ message: "Spare group updated!" });
+        res.status(200).json({ message: 'Spare group updated!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.updateSpareGroup = updateSpareGroup;

@@ -17,16 +17,16 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../models/User");
 const validateJWT = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const token = request.header("x-token");
+    const token = request.header('x-token');
     if (!token)
-        return response.status(400).json({ message: "No hay token" });
-    const secret = (_a = process.env.SECRET_JWT) !== null && _a !== void 0 ? _a : "";
+        return response.status(400).json({ message: 'No hay token' });
+    const secret = (_a = process.env.SECRET_JWT) !== null && _a !== void 0 ? _a : '';
     try {
         const verifyJWT = jsonwebtoken_1.default.verify(token, secret);
         const verifyUser = yield User_1.User.findByPk(verifyJWT.id);
         //crear objeto custom y enviar solo lo de datavalues (sin password ni los created)
         if (!verifyUser)
-            return response.status(401).json({ message: "Usuario no encontrado!" });
+            return response.status(401).json({ message: 'Usuario no encontrado!' });
         request.user = verifyUser;
         next();
     }

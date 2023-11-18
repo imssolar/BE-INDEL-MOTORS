@@ -5,7 +5,7 @@ const sequelize_1 = require("sequelize");
 const db_1 = require("../db");
 const SpareGroup_1 = require("./SpareGroup");
 const Unit_1 = require("./Unit");
-exports.Spare = db_1.sequelize.define("spare", {
+exports.Spare = db_1.sequelize.define('spare', {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
@@ -28,8 +28,8 @@ exports.Spare = db_1.sequelize.define("spare", {
         defaultValue: true,
     },
 });
-exports.Spare.belongsTo(Unit_1.Unit, { foreignKey: "unit_id" });
-exports.Spare.belongsTo(SpareGroup_1.SpareGroup, { foreignKey: "spareGroup_id" });
+exports.Spare.belongsTo(Unit_1.Unit, { foreignKey: 'unit_id' });
+exports.Spare.belongsTo(SpareGroup_1.SpareGroup, { foreignKey: 'spareGroup_id' });
 // Spare.belongsToMany(WorkOrder, {
 //     through: 'spare',
 //     foreignKey: 'item_id'

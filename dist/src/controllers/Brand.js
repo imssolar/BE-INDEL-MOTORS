@@ -17,7 +17,7 @@ const getBrands = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(allBrands);
     }
     catch (error) {
-        res.status(500).json({ message: error.message, type: "error" });
+        res.status(500).json({ message: error.message, type: 'error' });
     }
 });
 exports.getBrands = getBrands;
@@ -27,15 +27,15 @@ const getBrandByID = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const brand = yield Brand_1.Brand.findByPk(id);
         if (!brand) {
             res.status(404).json({
-                message: "La marca de vehículo no se encuentra en la base de datos",
-                type: "notFound",
+                message: 'La marca de vehículo no se encuentra en la base de datos',
+                type: 'notFound',
             });
             return;
         }
         res.status(200).json(brand);
     }
     catch (error) {
-        res.status(500).json({ message: error.message, type: "error" });
+        res.status(500).json({ message: error.message, type: 'error' });
     }
 });
 exports.getBrandByID = getBrandByID;
@@ -48,12 +48,12 @@ const getBrandByName = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!brandByName) {
             res.status(400).json({
                 message: `La marca ${name} no se encuentra en la base de datos`,
-                type: "notFound",
+                type: 'notFound',
             });
         }
     }
     catch (error) {
-        res.status(500).json({ message: error.message, type: "error" });
+        res.status(500).json({ message: error.message, type: 'error' });
     }
 });
 exports.getBrandByName = getBrandByName;
@@ -68,17 +68,17 @@ const addBrand = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 .status(400)
                 .json({
                 message: `La marca ${name} ya se encuentra creada`,
-                type: "error",
+                type: 'error',
             });
             return;
         }
         const createBrand = yield Brand_1.Brand.create({ name });
         res
             .status(201)
-            .json({ message: "Marca creada correctamente", type: "info" });
+            .json({ message: 'Marca creada correctamente', type: 'info' });
     }
     catch (error) {
-        res.status(500).json({ message: error.message, type: "error" });
+        res.status(500).json({ message: error.message, type: 'error' });
     }
 });
 exports.addBrand = addBrand;

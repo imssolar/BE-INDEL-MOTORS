@@ -13,7 +13,7 @@ exports.updateClient = exports.deleteClient = exports.addClient = exports.getCli
 const sequelize_1 = require("sequelize");
 const Client_1 = require("../models/Client");
 const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("get clients");
+    console.log('get clients');
     try {
         const clients = yield Client_1.Client.findAll();
         res.status(200).json(clients);
@@ -29,8 +29,8 @@ const getClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const client = yield Client_1.Client.findByPk(rut);
         if (!client) {
             const resp = {
-                message: "El cliente no se encuentra en la base de datos",
-                type: "notFound",
+                message: 'El cliente no se encuentra en la base de datos',
+                type: 'notFound',
             };
             res.status(200).json(resp);
             return;
@@ -38,7 +38,7 @@ const getClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json({ client });
     }
     catch (error) {
-        res.status(500).json({ message: error.message, type: "error" });
+        res.status(500).json({ message: error.message, type: 'error' });
     }
 });
 exports.getClient = getClient;
@@ -52,7 +52,7 @@ const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (findClient) {
             res.status(400).json({
                 message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
-                type: "error",
+                type: 'error',
             });
             return;
         }
@@ -67,14 +67,14 @@ const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         res
             .status(201)
-            .json({ message: "Cliente creado correctamente", type: "info" });
+            .json({ message: 'Cliente creado correctamente', type: 'info' });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {
             res.status(500).json({ message: error.errors[0].message });
         }
         else {
-            res.status(500).json({ message: error.message, type: "error" });
+            res.status(500).json({ message: error.message, type: 'error' });
         }
     }
 });
@@ -92,8 +92,8 @@ const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const client = yield Client_1.Client.findByPk(rut);
         if (!client) {
             res.status(400).json({
-                message: "El cliente a eliminar no se encuentra en la base de datos",
-                type: "error",
+                message: 'El cliente a eliminar no se encuentra en la base de datos',
+                type: 'error',
             });
             return;
         }
@@ -103,7 +103,7 @@ const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        res.status(500).json({ message: error.message, type: "error" });
+        res.status(500).json({ message: error.message, type: 'error' });
     }
 });
 exports.deleteClient = deleteClient;
@@ -114,8 +114,8 @@ const updateClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const client = yield Client_1.Client.findByPk(rut);
         if (!client) {
             res.status(400).json({
-                message: "El cliente no se encuentra en la base de datos",
-                type: "error",
+                message: 'El cliente no se encuentra en la base de datos',
+                type: 'error',
             });
             return;
         }
@@ -124,11 +124,11 @@ const updateClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             .status(200)
             .json({
             message: `El cliente con el rut ${rut} ha sido actualizado correctamente`,
-            type: "info",
+            type: 'info',
         });
     }
     catch (error) {
-        res.status(500).json({ message: error.message, type: "error" });
+        res.status(500).json({ message: error.message, type: 'error' });
     }
 });
 exports.updateClient = updateClient;
