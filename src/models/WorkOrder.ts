@@ -35,5 +35,5 @@ WorkOrder.belongsTo(Vehicle, { foreignKey: 'license_vehicle' })
 WorkOrder.hasMany(Spare, { foreignKey: 'workOrderId', as: 'spares_ids' })
 WorkOrder.belongsTo(OrderGroup, { foreignKey: 'ot_type' })
 /*Tratar de cambiar nombre a minúscula*/
-WorkOrder.belongsToMany(Spare, { as:'spares',through: 'workorderspare' });
-Spare.belongsToMany(WorkOrder, {as:'orders', through: 'workorderspare' });
+WorkOrder.belongsToMany(Spare, { as:'spares',through: 'workorderspare' })
+Spare.belongsToMany(WorkOrder, {as:'orders', through: 'workorderspare' })

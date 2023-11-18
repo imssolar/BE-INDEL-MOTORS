@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { addUser, deleteUser, getUser, getUsers, updateUser } from "../controllers/User";
+import { Router } from 'express'
+import { addUser, deleteUser, getUser, getUsers, updateUser } from '../controllers/User'
 
 
 

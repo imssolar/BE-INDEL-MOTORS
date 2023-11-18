@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { Login, getUserByToken } from "../controllers/Auth";
-import { validateJWT } from "../middlewares/JWTValidate";
-import { check } from "express-validator";
+import { Router } from 'express'
+import { Login, getUserByToken } from '../controllers/Auth'
+import { validateJWT } from '../middlewares/JWTValidate'
+import { check } from 'express-validator'
 
-const routes = Router();
+const routes = Router()
 /**
  * @swagger
 * /api/login:
@@ -42,16 +42,16 @@ const routes = Router();
 
 
 routes.post(
-  "/login",
-  [
-    check("email")
-      .isEmail()
-      .withMessage("El email no tiene el formato correcto"),
-    check("password")
-      .isLength({ min: 4 })
-      .withMessage("La contraseña debe tener al menos 6 caracteres"),
-  ],
-  Login
-);
+	'/login',
+	[
+		check('email')
+			.isEmail()
+			.withMessage('El email no tiene el formato correcto'),
+		check('password')
+			.isLength({ min: 4 })
+			.withMessage('La contraseña debe tener al menos 6 caracteres'),
+	],
+	Login
+)
 
-export default routes;
+export default routes

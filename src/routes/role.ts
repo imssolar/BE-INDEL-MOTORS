@@ -2,8 +2,8 @@
 
 
 
-import { Router } from "express";
-import { addRole, deleteRole, getRole, getRoles, updateRole } from "../controllers/Role";
+import { Router } from 'express'
+import { addRole, deleteRole, getRole, getRoles, updateRole } from '../controllers/Role'
 
 
 
