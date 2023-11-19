@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import {
-	ValidationError as SequelizeValidationError,
-	ValidationError,
+	ValidationError as SequelizeValidationError
 } from 'sequelize'
 import { Client } from '../models/Client'
 import { MessageType } from '../utils/typeMessage'
+import { validateRut } from '../utils/validateRut'
 
 interface ResponseMessage {
   message: string;
@@ -46,9 +46,17 @@ export const addClient = async (req: Request, res: Response) => {
     req.body
 	try {
 		const findClient = await Client.findByPk(rut)
+		const isValidate = validateRut(rut)
+		
 		if (findClient) {
 			res.status(400).json({
 				message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
+				type: 'error',
+			})
+			return
+		}else if(!isValidate){
+			res.status(400).json({
+				message: `El rut ingresado ${rut} no es válido`,
 				type: 'error',
 			})
 			return

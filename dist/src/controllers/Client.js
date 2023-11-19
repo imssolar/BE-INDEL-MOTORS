@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateClient = exports.deleteClient = exports.addClient = exports.getClient = exports.getClients = void 0;
 const sequelize_1 = require("sequelize");
 const Client_1 = require("../models/Client");
+const validateRut_1 = require("../utils/validateRut");
 const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('get clients');
     try {
@@ -49,9 +50,17 @@ const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut, names, surnames, cellphone_number, address, district, email } = req.body;
     try {
         const findClient = yield Client_1.Client.findByPk(rut);
+        const isValidate = (0, validateRut_1.validateRut)(rut);
         if (findClient) {
             res.status(400).json({
                 message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
+                type: 'error',
+            });
+            return;
+        }
+        else if (!isValidate) {
+            res.status(400).json({
+                message: `El rut ingresado ${rut} no es válido`,
                 type: 'error',
             });
             return;
