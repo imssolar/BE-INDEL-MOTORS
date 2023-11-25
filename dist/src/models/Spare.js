@@ -22,6 +22,7 @@ exports.Spare = db_1.sequelize.define('spare', {
     stock: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 0
     },
     status: {
         type: sequelize_1.DataTypes.BOOLEAN,

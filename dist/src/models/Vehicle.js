@@ -20,7 +20,7 @@ exports.Vehicle = db_1.sequelize.define('vehicle', {
         type: sequelize_1.DataTypes.INTEGER,
     },
     vin_number: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.STRING,
     },
 });
 exports.Vehicle.belongsTo(Client_1.Client, { foreignKey: 'rut_client' });

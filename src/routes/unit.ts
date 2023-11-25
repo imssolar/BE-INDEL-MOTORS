@@ -14,9 +14,9 @@ const routes = Router()
  *         description: OK.
  */
 routes.get('/', getUnits)
-routes.get('/:id', getUnit)
+routes.get('/:name', getUnit)
 routes.post('/', addUnit)
 routes.delete('/', deleteUnit)
-routes.put('/:id', updateUnit)
+routes.put('/:name', updateUnit)
 
 export default routes

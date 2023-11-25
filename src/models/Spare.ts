@@ -32,6 +32,7 @@ export const Spare = sequelize.define<ISpareModel>('spare', {
 	stock: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
+		defaultValue:0
 	},
 	status: {
 		type: DataTypes.BOOLEAN,

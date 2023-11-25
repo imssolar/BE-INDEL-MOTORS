@@ -14,6 +14,16 @@ const WorkOrder_1 = require("../models/WorkOrder");
 const sequelize_1 = require("sequelize");
 const Spare_1 = require("../models/Spare");
 /*se deben recuperar los spare  */
+// const substractStock = async(spares:any) => {
+// 	for(const spare of spares){
+// 		const spareValue = await Spare.findByPk(spare.id)
+// 		if(spareValue?.stock - spare.stock <=0 ){
+// 			//No sería posible utilizar este repuesto ya que no tiene stock
+// 		}
+// 		spareValue.stock -= spare.stock
+// 		await spareValue?.save()
+// 	}
+// }
 const getWorkOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const wo = yield WorkOrder_1.WorkOrder.findAll({ include: { model: Spare_1.Spare, as: 'spares' } });
@@ -37,16 +47,23 @@ const getWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.getWorkOrder = getWorkOrder;
 const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { observations, ot_type, license_vehicle, spares_ids } = req.body;
+    const { observations, ot_type, license_vehicle, spares } = req.body;
     console.log(observations);
     console.log(ot_type);
-    console.log(spares_ids);
+    console.log(spares.map((ids) => ids.id));
+    /**
+     * Validar el stock de repuestos antes de la creación
+     * En el caso de que el stock sea mayor o igual, descontarlo y continuar con la creación
+     * en caso contrario arrojar error al usuario
+     *
+     */
+    const spares_ids = spares.map((ids) => ids.id);
     try {
-        const workOrder = yield WorkOrder_1.WorkOrder.create({ observations, ot_type, license_vehicle });
         const spareInstances = yield Spare_1.Spare.findAll({ where: { id: spares_ids } });
         if (spareInstances.length !== spares_ids.length) {
             return res.status(400).json({ message: 'Algún repuesto no existe en la BD' });
         }
+        const workOrder = yield WorkOrder_1.WorkOrder.create({ observations, ot_type, license_vehicle });
         const spareIds = spareInstances.map(spare => spare.id).filter((id) => id !== undefined);
         yield workOrder.addSpares(spareIds);
         res.status(201).json({ workOrder });

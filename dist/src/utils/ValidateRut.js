@@ -7,4 +7,4 @@ const validateRut = (rutToValidate) => {
     return regexPattern.test(rutToValidate);
 };
 exports.validateRut = validateRut;
-//# sourceMappingURL=ValidateRut.js.map
+//# sourceMappingURL=validateRut.js.map

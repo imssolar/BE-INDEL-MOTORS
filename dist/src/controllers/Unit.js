@@ -22,9 +22,11 @@ const getUnits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getUnits = getUnits;
 const getUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { name } = req.params;
     try {
-        const unit = yield Unit_1.Unit.findByPk(id);
+        const unit = yield Unit_1.Unit.findOne({
+            where: { name_unit: `${name}` },
+        });
         res.status(200).json({ unit });
     }
     catch (error) {
@@ -58,11 +60,26 @@ const deleteUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.deleteUnit = deleteUnit;
 const updateUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { name } = req.params;
+    console.log('req params', name);
     const { name_unit, description } = req.body;
     try {
-        Unit_1.Unit.update({ name_unit, description }, { where: { id } });
-        res.status(200).json({ message: 'Client updated!' });
+        const unitToEdit = yield Unit_1.Unit.findOne({ where: { name_unit: `${name}` } });
+        console.log('UNIDAD A EDITAR', unitToEdit);
+        if (!unitToEdit) {
+            res.status(400).json({
+                message: `El tipo de unidad con el nombre ${name} no ha sido encontrada`,
+                type: 'notFound',
+            });
+            return;
+        }
+        Unit_1.Unit.update({ name_unit, description }, { where: { name_unit: name } });
+        res
+            .status(200)
+            .json({
+            message: `El tipo de unidad ${name} ha sido actualizada`,
+            type: 'info',
+        });
     }
     catch (error) {
         res.status(500).json({ message: 'error' });

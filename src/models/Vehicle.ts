@@ -18,7 +18,7 @@ export const Vehicle = sequelize.define('vehicle', {
 		type: DataTypes.INTEGER,
 	},
 	vin_number: {
-		type: DataTypes.INTEGER,
+		type: DataTypes.STRING,
 	},
 })
 
