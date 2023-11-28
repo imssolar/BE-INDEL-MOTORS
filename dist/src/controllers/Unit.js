@@ -27,6 +27,13 @@ const getUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const unit = yield Unit_1.Unit.findOne({
             where: { name_unit: `${name}` },
         });
+        if (!unit) {
+            res.status(400).json({
+                message: `La unidad con el nombre ${name} no se ha encontrado`,
+                type: 'info',
+            });
+            return;
+        }
         res.status(200).json({ unit });
     }
     catch (error) {
@@ -46,13 +53,24 @@ const addUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.addUnit = addUnit;
 const deleteUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { name } = req.params;
     try {
-        const unit = yield Unit_1.Unit.findByPk(id);
-        if (unit) {
-            unit.update({ status: false });
-            res.status(200).json({ message: 'Unit updated!' });
+        const unitToDelete = yield Unit_1.Unit.findOne({ where: { name_unit: name } });
+        if (!unitToDelete) {
+            res.status(400).json({
+                message: `La unidad con el nombre ${name} no se ha encontrado`,
+                type: 'info',
+            });
+            return;
         }
+        unitToDelete === null || unitToDelete === void 0 ? void 0 : unitToDelete.destroy();
+        res
+            .status(200)
+            .json({
+            message: `La unidad con el nombre ${name} se ha eliminado`,
+            type: 'info',
+        });
+        res.status(200).json({ message: 'Unit updated!' });
     }
     catch (error) {
         res.status(500).json({ message: error });
@@ -74,9 +92,7 @@ const updateUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return;
         }
         Unit_1.Unit.update({ name_unit, description }, { where: { name_unit: name } });
-        res
-            .status(200)
-            .json({
+        res.status(200).json({
             message: `El tipo de unidad ${name} ha sido actualizada`,
             type: 'info',
         });

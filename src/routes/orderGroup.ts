@@ -10,10 +10,10 @@ import { addOrderGroup, deleteOrderGroup, getOrderGroup, getOrderGroups, updateO
 const routes = Router()
 
 routes.get('/', getOrderGroups)
-routes.get('/:id', getOrderGroup)
+routes.get('/:name', getOrderGroup)
 routes.post('/', addOrderGroup)
-routes.delete('/', deleteOrderGroup)
-routes.put('/:id', updateOrderGroup)
+routes.delete('/:name', deleteOrderGroup)
+routes.put('/:name', updateOrderGroup)
 
 
 

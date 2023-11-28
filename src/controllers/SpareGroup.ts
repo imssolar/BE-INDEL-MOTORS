@@ -1,11 +1,9 @@
 import { Request, Response } from 'express'
 import { SpareGroup } from '../models/SpareGroup'
-import {
-	ValidationError as SequelizeValidationError,
-	ValidationError,
-} from 'sequelize'
+import { ValidationError as SequelizeValidationError } from 'sequelize'
 
-export const getSpareGroups = async (req: Request, res: Response) => {
+export const getSpareGroups = async (res: Response): Promise<void> => {
+	console.log('getSparegroups')
 	try {
 		const sparesGroup = await SpareGroup.findAll()
 		res.status(200).json(sparesGroup)
@@ -14,7 +12,10 @@ export const getSpareGroups = async (req: Request, res: Response) => {
 	}
 }
 
-export const getSpareGroup = async (req: Request, res: Response) => {
+export const getSpareGroup = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
 	const { name } = req.params
 	console.log(name)
 	try {
@@ -34,7 +35,10 @@ export const getSpareGroup = async (req: Request, res: Response) => {
 	}
 }
 
-export const addSpareGroup = async (req: Request, res: Response) => {
+export const addSpareGroup = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
 	const { name, description } = req.body
 
 	try {
@@ -44,7 +48,7 @@ export const addSpareGroup = async (req: Request, res: Response) => {
 		})
 		if (isSpareGroupCreated) {
 			res.status(400).json({
-				message: `El grupo de repuesto con el nombre ${name} ya se encuentra en la base de datos`,
+				message: `El grupo de repuesto con el nombre ${name} ya se encuentra creado`,
 				type: 'error',
 			})
 			return
@@ -63,26 +67,56 @@ export const addSpareGroup = async (req: Request, res: Response) => {
 	}
 }
 
-export const deleteSpareGroup = async (req: Request, res: Response) => {
-	const { id } = req.params
+export const deleteSpareGroup = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	const { name: nameGroup } = req.params
 	try {
-		const group = await SpareGroup.findByPk(id)
-		if (group) {
-			group.update({ status: false })
+		const isSpareGroupCreated = await SpareGroup.findOne({
+			where: { name: nameGroup },
+		})
+		console.log(isSpareGroupCreated)
+		if (!isSpareGroupCreated) {
+			res.status(400).json({
+				message: `El grupo de repuesto con el nombre ${nameGroup} no está  creado, por lo tanto, no es posible eliminarlo`,
+				type: 'info',
+			})
 		}
-		res.status(200).json({ message: 'Spare group deleted!' })
-	} catch (error) {
-		res.status(500).json({ message: 'error' })
+		isSpareGroupCreated?.destroy()
+		res.status(200).json({
+			message: `El grupo de repuesto con el nombre ${nameGroup} ha sido eliminado`,
+			type: 'info',
+		})
+	} catch (error: any) {
+		// res.status(500).json({ message: error.message })
+		console.log('error delete',error)
 	}
 }
 
-export const updateSpareGroup = async (req: Request, res: Response) => {
-	const { id } = req.params
+export const updateSpareGroup = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	const { name: nameGroup } = req.params
 	const { name, description } = req.body
 
 	try {
-		SpareGroup.update({ name, description }, { where: { id } })
-		res.status(200).json({ message: 'Spare group updated!' })
+		const isSpareGroupCreated = await SpareGroup.findOne({
+			where: { name: nameGroup },
+		})
+		if (!isSpareGroupCreated) {
+			res.status(400).json({
+				message: `El grupo de repuesto ${nameGroup} no se encuentra creado aún`,
+				type: 'info',
+			})
+			return
+		}
+		SpareGroup.update({ name, description }, { where: { name: nameGroup } })
+		res.status(200).json({
+			message: `El grupo de repuesto con el nombre ${nameGroup} ha sido actualizado`,
+			type: 'info',
+		})
 	} catch (error) {
 		res.status(500).json({ message: 'error' })
 	}

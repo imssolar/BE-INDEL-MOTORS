@@ -1,14 +1,12 @@
 import { Request, Response } from 'express'
-import {
-	ValidationError as SequelizeValidationError
-} from 'sequelize'
+import { ValidationError as SequelizeValidationError } from 'sequelize'
 import { Client } from '../models/Client'
 import { MessageType } from '../utils/typeMessage'
 import { validateRut } from '../utils/validateRut'
 
 interface ResponseMessage {
-  message: string;
-  type: MessageType;
+	message: string
+	type: MessageType
 }
 
 export const getClients = async (req: Request, res: Response) => {
@@ -43,18 +41,18 @@ crear error personalizado
 */
 export const addClient = async (req: Request, res: Response) => {
 	const { rut, names, surnames, cellphone_number, address, district, email } =
-    req.body
+		req.body
 	try {
 		const findClient = await Client.findByPk(rut)
 		const isValidate = validateRut(rut)
-		
+
 		if (findClient) {
 			res.status(400).json({
 				message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
 				type: 'error',
 			})
 			return
-		}else if(!isValidate){
+		} else if (!isValidate) {
 			res.status(400).json({
 				message: `El rut ingresado ${rut} no es válido`,
 				type: 'error',
@@ -104,6 +102,7 @@ export const deleteClient = async (req: Request, res: Response) => {
 		client.destroy()
 		res.status(200).json({
 			message: `El cliente con el rut ${client.rut} ha sido eliminado`,
+			type: 'info',
 		})
 	} catch (error: any) {
 		res.status(500).json({ message: error.message, type: 'error' })
@@ -113,7 +112,7 @@ export const deleteClient = async (req: Request, res: Response) => {
 export const updateClient = async (req: Request, res: Response) => {
 	const { rut } = req.params
 	const { names, surnames, cellphone_number, address, district, email } =
-    req.body
+		req.body
 
 	try {
 		const client = await Client.findByPk(rut)
@@ -128,12 +127,10 @@ export const updateClient = async (req: Request, res: Response) => {
 			{ names, surnames, cellphone_number, address, district, email },
 			{ where: { rut } }
 		)
-		res
-			.status(200)
-			.json({
-				message: `El cliente con el rut ${rut} ha sido actualizado correctamente`,
-				type: 'info',
-			})
+		res.status(200).json({
+			message: `El cliente con el rut ${rut} ha sido actualizado correctamente`,
+			type: 'info',
+		})
 	} catch (error: any) {
 		res.status(500).json({ message: error.message, type: 'error' })
 	}

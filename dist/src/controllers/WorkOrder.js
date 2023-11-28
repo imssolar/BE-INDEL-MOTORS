@@ -13,20 +13,33 @@ exports.addWorkOrder = exports.getWorkOrder = exports.getWorkOrders = void 0;
 const WorkOrder_1 = require("../models/WorkOrder");
 const sequelize_1 = require("sequelize");
 const Spare_1 = require("../models/Spare");
-/*se deben recuperar los spare  */
-// const substractStock = async(spares:any) => {
-// 	for(const spare of spares){
-// 		const spareValue = await Spare.findByPk(spare.id)
-// 		if(spareValue?.stock - spare.stock <=0 ){
-// 			//No sería posible utilizar este repuesto ya que no tiene stock
-// 		}
-// 		spareValue.stock -= spare.stock
-// 		await spareValue?.save()
-// 	}
-// }
+const validateSpareStock = (spares) => __awaiter(void 0, void 0, void 0, function* () {
+    const resValidate = [];
+    for (const spare of spares) {
+        const spareValue = yield Spare_1.Spare.findByPk(spare.id);
+        if (spareValue && spareValue.stock - spare.stock < 0) {
+            //No sería posible utilizar este repuesto ya que no tiene stock
+            const obj = {
+                name: spareValue.name,
+                stockThatINeed: Math.abs(spareValue.stock - spare.stock),
+            };
+            resValidate.push(obj);
+        }
+    }
+    return resValidate;
+});
+const substractStock = (spares) => __awaiter(void 0, void 0, void 0, function* () {
+    for (const spare of spares) {
+        const spareFound = yield Spare_1.Spare.findByPk(spare.id);
+        spareFound.stock -= spare.stock;
+        yield (spareFound === null || spareFound === void 0 ? void 0 : spareFound.save());
+    }
+});
 const getWorkOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const wo = yield WorkOrder_1.WorkOrder.findAll({ include: { model: Spare_1.Spare, as: 'spares' } });
+        const wo = yield WorkOrder_1.WorkOrder.findAll({
+            include: { model: Spare_1.Spare, as: 'spares' },
+        });
         res.status(200).json(wo);
     }
     catch (error) {
@@ -38,7 +51,9 @@ const getWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { id } = req.params;
     console.log(id);
     try {
-        const wo = yield WorkOrder_1.WorkOrder.findByPk(id, { include: { model: Spare_1.Spare, as: 'spares' } });
+        const wo = yield WorkOrder_1.WorkOrder.findByPk(id, {
+            include: { model: Spare_1.Spare, as: 'spares' },
+        });
         res.status(200).json(wo);
     }
     catch (error) {
@@ -48,9 +63,6 @@ const getWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getWorkOrder = getWorkOrder;
 const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { observations, ot_type, license_vehicle, spares } = req.body;
-    console.log(observations);
-    console.log(ot_type);
-    console.log(spares.map((ids) => ids.id));
     /**
      * Validar el stock de repuestos antes de la creación
      * En el caso de que el stock sea mayor o igual, descontarlo y continuar con la creación
@@ -61,10 +73,29 @@ const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const spareInstances = yield Spare_1.Spare.findAll({ where: { id: spares_ids } });
         if (spareInstances.length !== spares_ids.length) {
-            return res.status(400).json({ message: 'Algún repuesto no existe en la BD' });
+            return res
+                .status(400)
+                .json({ message: 'Algún repuesto no existe en la BD' });
         }
-        const workOrder = yield WorkOrder_1.WorkOrder.create({ observations, ot_type, license_vehicle });
-        const spareIds = spareInstances.map(spare => spare.id).filter((id) => id !== undefined);
+        //Validar si tengo stock de todos los repuestos
+        const sparesWithoutStock = yield validateSpareStock(spares);
+        if (sparesWithoutStock.length > 0) {
+            return res.status(200).json({
+                sparesWithoutStock,
+                message: 'No se pudo crear la orden de trabajo debido a falta de stock de algún(s) repuestos',
+                type: 'info',
+            });
+        }
+        //Descontar stock de todos los repuestos necesarios
+        yield substractStock(spares);
+        const workOrder = yield WorkOrder_1.WorkOrder.create({
+            observations,
+            ot_type,
+            license_vehicle,
+        });
+        const spareIds = spareInstances
+            .map((spare) => spare.id)
+            .filter((id) => id !== undefined);
         yield workOrder.addSpares(spareIds);
         res.status(201).json({ workOrder });
     }

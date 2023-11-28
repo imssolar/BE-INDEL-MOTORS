@@ -109,6 +109,7 @@ const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         client.destroy();
         res.status(200).json({
             message: `El cliente con el rut ${client.rut} ha sido eliminado`,
+            type: 'info',
         });
     }
     catch (error) {
@@ -129,9 +130,7 @@ const updateClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return;
         }
         Client_1.Client.update({ names, surnames, cellphone_number, address, district, email }, { where: { rut } });
-        res
-            .status(200)
-            .json({
+        res.status(200).json({
             message: `El cliente con el rut ${rut} ha sido actualizado correctamente`,
             type: 'info',
         });

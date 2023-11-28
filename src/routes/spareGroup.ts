@@ -12,8 +12,8 @@ const routes = Router()
 routes.get('/', getSpareGroups)
 routes.get('/:name', getSpareGroup)
 routes.post('/', addSpareGroup)
-routes.delete('/', deleteSpareGroup)
-routes.put('/:id', updateSpareGroup)
+routes.delete('/:name', deleteSpareGroup)
+routes.put('/:name', updateSpareGroup)
 
 
 

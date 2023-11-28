@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateOrderGroup = exports.deleteOrderGroup = exports.addOrderGroup = exports.getOrderGroup = exports.getOrderGroups = void 0;
 const sequelize_1 = require("sequelize");
-const Client_1 = require("../models/Client");
 const OrderGroup_1 = require("../models/OrderGroup");
 const getOrderGroups = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -24,10 +23,17 @@ const getOrderGroups = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getOrderGroups = getOrderGroups;
 const getOrderGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { name } = req.params;
     try {
-        const order = yield OrderGroup_1.OrderGroup.findByPk(id);
-        res.status(200).json(order);
+        const isOrderGroupCreated = yield OrderGroup_1.OrderGroup.findOne({ where: { name } });
+        if (!isOrderGroupCreated) {
+            res.status(400).json({
+                message: `El tipo de orden ${name} no se encuentra creada aún`,
+                type: 'notFound',
+            });
+            return;
+        }
+        res.status(200).json(isOrderGroupCreated);
     }
     catch (error) {
         res.status(500).json({ message: error });
@@ -40,8 +46,19 @@ crear error personalizado
 const addOrderGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
     try {
-        const order = yield OrderGroup_1.OrderGroup.create({ name });
-        res.status(201).json({ order });
+        const isOrderGroupCreated = yield OrderGroup_1.OrderGroup.findOne({ where: { name } });
+        if (isOrderGroupCreated) {
+            res.status(400).json({
+                message: `El tipo de orden ${name} ya se encuentra creada`,
+                type: 'info',
+            });
+            return;
+        }
+        yield OrderGroup_1.OrderGroup.create({ name });
+        res.status(201).json({
+            message: `El tipo de orden con el nombre ${name} ha sido creado`,
+            type: 'info',
+        });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {
@@ -61,13 +78,23 @@ exports.addOrderGroup = addOrderGroup;
     req.headers
 */
 const deleteOrderGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { name } = req.params;
     try {
-        const order = yield Client_1.Client.findByPk(id);
-        if (order) {
-            order.update({ status: false });
+        const isOrderGroupCreated = yield OrderGroup_1.OrderGroup.findOne({ where: { name } });
+        if (!isOrderGroupCreated) {
+            res.status(400).json({
+                message: `El tipo de orden con el nombre ${name} no se encuentra creada`,
+                type: 'error',
+            });
+            return;
         }
-        res.status(200).json({ message: 'Order deleted!' });
+        yield isOrderGroupCreated.destroy();
+        res
+            .status(200)
+            .json({
+            message: `El tipo de orden con el nombre ${name} ha sido eliminada`,
+            type: 'info',
+        });
     }
     catch (error) {
         res.status(500).json({ message: 'error' });
@@ -75,11 +102,19 @@ const deleteOrderGroup = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.deleteOrderGroup = deleteOrderGroup;
 const updateOrderGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const { name } = req.body;
+    const { name } = req.params;
+    const { name: nameOrderGroup } = req.body;
     try {
-        OrderGroup_1.OrderGroup.update({ name }, { where: { id } });
-        res.status(200).json({ message: 'Client updated!' });
+        const isOrderGroupCreated = yield OrderGroup_1.OrderGroup.findOne({ where: { name } });
+        if (!isOrderGroupCreated) {
+            res.status(400).json({
+                message: `El tipo de orden con el nombre ${name} no se encuentra creada`,
+                type: 'error',
+            });
+            return;
+        }
+        OrderGroup_1.OrderGroup.update({ name: nameOrderGroup }, { where: { name } });
+        res.status(200).json({ message: `El tipo de orden con el nombre ${name} ha sido actualizada` });
     }
     catch (error) {
         res.status(500).json({ message: 'error' });

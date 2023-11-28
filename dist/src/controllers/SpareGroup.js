@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateSpareGroup = exports.deleteSpareGroup = exports.addSpareGroup = exports.getSpareGroup = exports.getSpareGroups = void 0;
 const SpareGroup_1 = require("../models/SpareGroup");
 const sequelize_1 = require("sequelize");
-const getSpareGroups = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getSpareGroups = (res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('getSparegroups');
     try {
         const sparesGroup = yield SpareGroup_1.SpareGroup.findAll();
         res.status(200).json(sparesGroup);
@@ -52,7 +53,7 @@ const addSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
         if (isSpareGroupCreated) {
             res.status(400).json({
-                message: `El grupo de repuesto con el nombre ${name} ya se encuentra en la base de datos`,
+                message: `El grupo de repuesto con el nombre ${name} ya se encuentra creado`,
                 type: 'error',
             });
             return;
@@ -74,25 +75,49 @@ const addSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.addSpareGroup = addSpareGroup;
 const deleteSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { name: nameGroup } = req.params;
     try {
-        const group = yield SpareGroup_1.SpareGroup.findByPk(id);
-        if (group) {
-            group.update({ status: false });
+        const isSpareGroupCreated = yield SpareGroup_1.SpareGroup.findOne({
+            where: { name: nameGroup },
+        });
+        console.log(isSpareGroupCreated);
+        if (!isSpareGroupCreated) {
+            res.status(400).json({
+                message: `El grupo de repuesto con el nombre ${nameGroup} no está  creado, por lo tanto, no es posible eliminarlo`,
+                type: 'info',
+            });
         }
-        res.status(200).json({ message: 'Spare group deleted!' });
+        isSpareGroupCreated === null || isSpareGroupCreated === void 0 ? void 0 : isSpareGroupCreated.destroy();
+        res.status(200).json({
+            message: `El grupo de repuesto con el nombre ${nameGroup} ha sido eliminado`,
+            type: 'info',
+        });
     }
     catch (error) {
-        res.status(500).json({ message: 'error' });
+        // res.status(500).json({ message: error.message })
+        console.log('error delete', error);
     }
 });
 exports.deleteSpareGroup = deleteSpareGroup;
 const updateSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { name: nameGroup } = req.params;
     const { name, description } = req.body;
     try {
-        SpareGroup_1.SpareGroup.update({ name, description }, { where: { id } });
-        res.status(200).json({ message: 'Spare group updated!' });
+        const isSpareGroupCreated = yield SpareGroup_1.SpareGroup.findOne({
+            where: { name: nameGroup },
+        });
+        if (!isSpareGroupCreated) {
+            res.status(400).json({
+                message: `El grupo de repuesto ${nameGroup} no se encuentra creado aún`,
+                type: 'info',
+            });
+            return;
+        }
+        SpareGroup_1.SpareGroup.update({ name, description }, { where: { name: nameGroup } });
+        res.status(200).json({
+            message: `El grupo de repuesto con el nombre ${nameGroup} ha sido actualizado`,
+            type: 'info',
+        });
     }
     catch (error) {
         res.status(500).json({ message: 'error' });

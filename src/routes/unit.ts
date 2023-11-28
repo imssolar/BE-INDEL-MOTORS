@@ -16,7 +16,7 @@ const routes = Router()
 routes.get('/', getUnits)
 routes.get('/:name', getUnit)
 routes.post('/', addUnit)
-routes.delete('/', deleteUnit)
+routes.delete('/:name', deleteUnit)
 routes.put('/:name', updateUnit)
 
 export default routes

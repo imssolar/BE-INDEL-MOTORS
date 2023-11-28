@@ -15,7 +15,7 @@ const routes = (0, express_1.Router)();
 routes.get('/', Unit_1.getUnits);
 routes.get('/:name', Unit_1.getUnit);
 routes.post('/', Unit_1.addUnit);
-routes.delete('/', Unit_1.deleteUnit);
+routes.delete('/:name', Unit_1.deleteUnit);
 routes.put('/:name', Unit_1.updateUnit);
 exports.default = routes;
 //# sourceMappingURL=unit.js.map
