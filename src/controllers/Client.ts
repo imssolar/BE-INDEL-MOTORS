@@ -9,7 +9,7 @@ interface ResponseMessage {
 	type: MessageType
 }
 
-export const getClients = async (req: Request, res: Response) => {
+export const getClients = async (req: Request, res: Response):Promise<void> => {
 	console.log('get clients')
 	try {
 		const clients = await Client.findAll()
@@ -19,7 +19,7 @@ export const getClients = async (req: Request, res: Response) => {
 	}
 }
 
-export const getClient = async (req: Request, res: Response) => {
+export const getClient = async (req: Request, res: Response):Promise<void> => {
 	const { rut } = req.params
 	try {
 		const client = await Client.findByPk(rut)
@@ -39,7 +39,7 @@ export const getClient = async (req: Request, res: Response) => {
 /*CREAR OBJETO DE ERRORES
 crear error personalizado
 */
-export const addClient = async (req: Request, res: Response) => {
+export const addClient = async (req: Request, res: Response):Promise<void> => {
 	const { rut, names, surnames, cellphone_number, address, district, email } =
 		req.body
 	try {
@@ -47,7 +47,7 @@ export const addClient = async (req: Request, res: Response) => {
 		const isValidate = validateRut(rut)
 
 		if (findClient) {
-			res.status(400).json({
+			res.status(404).json({
 				message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
 				type: 'error',
 			})

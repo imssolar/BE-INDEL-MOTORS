@@ -52,7 +52,7 @@ const addClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const findClient = yield Client_1.Client.findByPk(rut);
         const isValidate = (0, validateRut_1.validateRut)(rut);
         if (findClient) {
-            res.status(400).json({
+            res.status(404).json({
                 message: `El cliente con el rut ${rut} ya se encuentra en la base de datos`,
                 type: 'error',
             });

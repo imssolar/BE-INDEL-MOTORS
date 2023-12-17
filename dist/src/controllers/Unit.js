@@ -27,16 +27,18 @@ const getUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const unit = yield Unit_1.Unit.findOne({
             where: { name_unit: `${name}` },
         });
+        console.log(unit);
         if (!unit) {
-            res.status(400).json({
+            console.log('La unidad no se encuentra');
+            return res.status(404).json({
                 message: `La unidad con el nombre ${name} no se ha encontrado`,
-                type: 'info',
+                type: 'notFound',
             });
-            return;
         }
         res.status(200).json({ unit });
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ message: error });
     }
 });
@@ -44,8 +46,22 @@ exports.getUnit = getUnit;
 const addUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name_unit, description } = req.body;
     try {
-        const unitToCreate = yield Unit_1.Unit.create({ name_unit, description });
-        res.status(200).json({ unitToCreate });
+        const isUnitCreated = yield Unit_1.Unit.findOne({ where: { name_unit } });
+        if (isUnitCreated) {
+            console.log('Ya está creada');
+            res.status(422).json({
+                message: `La unidad con el nombre ${name_unit} ya se encuentra creada`,
+                type: 'error',
+            });
+            return;
+        }
+        yield Unit_1.Unit.create({ name_unit, description });
+        res
+            .status(200)
+            .json({
+            message: `La unidad con el nombre ${name_unit} ha sido creada `,
+            type: 'info',
+        });
     }
     catch (error) {
         res.status(500).json({ message: error });
@@ -57,20 +73,16 @@ const deleteUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const unitToDelete = yield Unit_1.Unit.findOne({ where: { name_unit: name } });
         if (!unitToDelete) {
-            res.status(400).json({
+            return res.status(404).json({
                 message: `La unidad con el nombre ${name} no se ha encontrado`,
                 type: 'info',
             });
-            return;
         }
         unitToDelete === null || unitToDelete === void 0 ? void 0 : unitToDelete.destroy();
-        res
-            .status(200)
-            .json({
+        res.status(200).json({
             message: `La unidad con el nombre ${name} se ha eliminado`,
             type: 'info',
         });
-        res.status(200).json({ message: 'Unit updated!' });
     }
     catch (error) {
         res.status(500).json({ message: error });
