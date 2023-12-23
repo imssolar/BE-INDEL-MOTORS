@@ -2,11 +2,11 @@ import { Request, Response } from 'express'
 import { SpareGroup } from '../models/SpareGroup'
 import { ValidationError as SequelizeValidationError } from 'sequelize'
 
-export const getSpareGroups = async (res: Response): Promise<void> => {
+export const getSpareGroups = async (req:Request,res: Response): Promise<void> => {
 	console.log('getSparegroups')
 	try {
 		const sparesGroup = await SpareGroup.findAll()
-		res.status(200).json(sparesGroup)
+		 res.status(200).json(sparesGroup)
 	} catch (error: any) {
 		res.status(500).json({ message: error.message })
 	}
@@ -15,7 +15,7 @@ export const getSpareGroups = async (res: Response): Promise<void> => {
 export const getSpareGroup = async (
 	req: Request,
 	res: Response
-): Promise<void> => {
+) => {
 	const { name } = req.params
 	console.log(name)
 	try {
@@ -23,15 +23,15 @@ export const getSpareGroup = async (
 			where: { name: `${name}` },
 		})
 		if (!sparegroup) {
-			res.status(400).json({
+			return res.status(400).json({
 				message: `El grupo de repuesto con el nombre ${name} no se encuentra en la base de datos`,
 				type: 'notFound',
 			})
-			return
+			
 		}
-		res.status(200).json(sparegroup)
+		return res.status(200).json(sparegroup)
 	} catch (error: any) {
-		res.status(500).json({ message: error })
+		return res.status(500).json({ message: error })
 	}
 }
 

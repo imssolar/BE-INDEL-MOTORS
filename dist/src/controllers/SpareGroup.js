@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateSpareGroup = exports.deleteSpareGroup = exports.addSpareGroup = exports.getSpareGroup = exports.getSpareGroups = void 0;
 const SpareGroup_1 = require("../models/SpareGroup");
 const sequelize_1 = require("sequelize");
-const getSpareGroups = (res) => __awaiter(void 0, void 0, void 0, function* () {
+const getSpareGroups = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('getSparegroups');
     try {
         const sparesGroup = yield SpareGroup_1.SpareGroup.findAll();
@@ -31,16 +31,15 @@ const getSpareGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             where: { name: `${name}` },
         });
         if (!sparegroup) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: `El grupo de repuesto con el nombre ${name} no se encuentra en la base de datos`,
                 type: 'notFound',
             });
-            return;
         }
-        res.status(200).json(sparegroup);
+        return res.status(200).json(sparegroup);
     }
     catch (error) {
-        res.status(500).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 });
 exports.getSpareGroup = getSpareGroup;
