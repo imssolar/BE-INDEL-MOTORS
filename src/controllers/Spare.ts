@@ -24,7 +24,7 @@ export const getSpare = async (req: Request, res: Response) => {
 }
 
 export const addSpare = async (req: Request, res: Response) => {
-	const { name, cost, stock, unit_id, spareGroup_id } = req.body
+	const { name, cost, stock, unit_id, spareGroup_id,code_id } = req.body
 	try {
 		const newSpare = await Spare.create({ name, cost, stock, unit_id, spareGroup_id })
 		res.status(200).json({ newSpare })
@@ -46,10 +46,10 @@ export const deleteSpare = async (req: Request, res: Response) => {
 }
 
 export const updateSpare = async (req: Request, res: Response) => {
-	const { id } = req.params
+	const { code_id } = req.params
 	const { name, cost, stock } = req.body
 	try {
-		Spare.update({ name, cost, stock }, { where: { id } })
+		Spare.update({ name, cost, stock }, { where: { code_id } })
 		res.status(200).json({})
 	} catch (error) {
 		res.status(500).json({ message: error })

@@ -33,7 +33,7 @@ const getSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getSpare = getSpare;
 const addSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, cost, stock, unit_id, spareGroup_id } = req.body;
+    const { name, cost, stock, unit_id, spareGroup_id, code_id } = req.body;
     try {
         const newSpare = yield Spare_1.Spare.create({ name, cost, stock, unit_id, spareGroup_id });
         res.status(200).json({ newSpare });
@@ -57,10 +57,10 @@ const deleteSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.deleteSpare = deleteSpare;
 const updateSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { code_id } = req.params;
     const { name, cost, stock } = req.body;
     try {
-        Spare_1.Spare.update({ name, cost, stock }, { where: { id } });
+        Spare_1.Spare.update({ name, cost, stock }, { where: { code_id } });
         res.status(200).json({});
     }
     catch (error) {

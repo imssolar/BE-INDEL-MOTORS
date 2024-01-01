@@ -5,7 +5,7 @@ import { Unit } from './Unit'
 import { WorkOrder } from './WorkOrder'
 
 interface ISpare {
-  id?: number;
+  code_id?: string;
   name: string;
   cost: number;
   stock: number;
@@ -16,10 +16,9 @@ interface ISpare {
 interface ISpareModel extends Model<ISpare>, ISpare {}
 
 export const Spare = sequelize.define<ISpareModel>('spare', {
-	id: {
-		type: DataTypes.INTEGER,
+	code_id: {
+		type: DataTypes.STRING,
 		primaryKey: true,
-		autoIncrement: true,
 	},
 	name: {
 		type: DataTypes.STRING,

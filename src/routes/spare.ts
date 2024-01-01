@@ -4,9 +4,9 @@ import { addSpare, deleteSpare, getSpare, getSpares, updateSpare } from '../cont
 const routes = Router()
 
 routes.get('/', getSpares)
-routes.get('/:id', getSpare)
+routes.get('/:code_id', getSpare)
 routes.post('/', addSpare)
 routes.delete('/', deleteSpare)
-routes.put('/:id', updateSpare)
+routes.put('/:code_id', updateSpare)
 
 export default routes
