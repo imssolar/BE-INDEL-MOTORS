@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateSpare = exports.deleteSpare = exports.addSpare = exports.getSpare = exports.getSpares = void 0;
+exports.updateSpare = exports.deleteSpare = exports.addSpare = exports.getSpareByCode = exports.getSpare = exports.getSpares = void 0;
 const Spare_1 = require("../models/Spare");
 const getSpares = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -32,10 +32,29 @@ const getSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getSpare = getSpare;
+const getSpareByCode = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { code_id } = req.params;
+    try {
+        /*Ejecutar una búsqueda con condicional LIKE para que encuentre los similares*/
+        const spare = yield Spare_1.Spare.findOne({ where: { code_id } });
+        res.status(200).json(spare);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.getSpareByCode = getSpareByCode;
 const addSpare = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, cost, stock, unit_id, spareGroup_id, code_id } = req.body;
     try {
-        const newSpare = yield Spare_1.Spare.create({ name, cost, stock, unit_id, spareGroup_id });
+        const newSpare = yield Spare_1.Spare.create({
+            name,
+            cost,
+            stock,
+            unit_id,
+            spareGroup_id,
+            code_id,
+        });
         res.status(200).json({ newSpare });
     }
     catch (error) {

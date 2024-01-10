@@ -55,6 +55,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         else if (!isUserCreated) {
             res.status(400).json({
                 message: `El cliente con el rut ${rut_client} no se encuentra en la base de datos`,
+                type: "error",
             });
             return;
         }
@@ -66,7 +67,10 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vin_number,
             rut_client,
         });
-        res.status(200).json({ vehicleToCreate });
+        res.status(200).json({
+            message: `El vehículo con la patente ${license_plate} ha sido creado!`,
+            type: "info",
+        });
     }
     catch (error) {
         res.status(500).json({ message: error });
@@ -78,8 +82,11 @@ const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate);
         if (vehicle) {
-            vehicle.update({ status: false });
-            res.status(200).json({ message: "vehicle updated!" });
+            vehicle.destroy();
+            res.status(200).json({
+                message: `El vehículo con la patente ${license_plate} ha sido eliminado!`,
+                type: "info",
+            });
         }
     }
     catch (error) {
