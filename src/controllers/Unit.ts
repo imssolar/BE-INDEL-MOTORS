@@ -12,6 +12,7 @@ export const getUnits = async (req: Request, res: Response) => {
 
 export const getUnit = async (req: Request, res: Response) => {
 	const { name } = req.params
+	console.log(name)
 	try {
 		const unit = await Unit.findOne({
 			where: { name_unit: `${name}` },

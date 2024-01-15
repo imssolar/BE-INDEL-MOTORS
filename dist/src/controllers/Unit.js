@@ -23,6 +23,7 @@ const getUnits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getUnits = getUnits;
 const getUnit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.params;
+    console.log(name);
     try {
         const unit = yield Unit_1.Unit.findOne({
             where: { name_unit: `${name}` },
