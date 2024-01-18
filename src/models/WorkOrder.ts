@@ -5,8 +5,8 @@ import { Spare } from './Spare'
 import { Vehicle } from './Vehicle'
 
 export interface WorkOrderInstance extends Model {
-    addSpare: (spareId: number) => Promise<void>;
-    addSpares: (spareIds: number[]) => Promise<void>;
+    addSpare: (spareCodeId: string) => Promise<void>;
+    addSpares: (spareCodeIds: string[]) => Promise<void>;
   }
   
 
