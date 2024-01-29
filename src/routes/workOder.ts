@@ -1,13 +1,18 @@
+import { Router } from "express";
+import {
+  addWorkOrder,
+  getWorkOrder,
+  getWorkOrderByOtNumber,
+  getWorkOrders,
+  updateWorkOrder,
+} from "../controllers/WorkOrder";
 
-import { Router } from 'express'
-import {  addWorkOrder, getWorkOrder, getWorkOrders } from '../controllers/WorkOrder'
+const router = Router();
 
+router.get("/", getWorkOrders);
+router.get("/:id", getWorkOrder);
+router.get("/otnumber/:id", getWorkOrderByOtNumber);
+router.post("/", addWorkOrder);
+router.put("/:id", updateWorkOrder);
 
-
-const router = Router()
-
-router.get('/', getWorkOrders)
-router.get('/:id', getWorkOrder)
-router.post('/', addWorkOrder)
-
-export default router
+export default router;

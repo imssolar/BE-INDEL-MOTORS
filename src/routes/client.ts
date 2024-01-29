@@ -7,7 +7,7 @@ const routes = Router()
 
 routes.get('/', getClients)
 routes.get('/:rut', getClient)
-routes.post('/',[validateJWT] ,addClient)
+routes.post('/',addClient)
 routes.delete('/:rut', deleteClient)
 routes.put('/:rut', updateClient)
 

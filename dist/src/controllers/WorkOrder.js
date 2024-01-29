@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addWorkOrder = exports.getWorkOrder = exports.getWorkOrders = void 0;
+exports.addWorkOrder = exports.updateWorkOrder = exports.getWorkOrderByOtNumber = exports.getWorkOrder = exports.getWorkOrders = void 0;
 const WorkOrder_1 = require("../models/WorkOrder");
 const sequelize_1 = require("sequelize");
 const Spare_1 = require("../models/Spare");
@@ -62,8 +62,28 @@ const getWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getWorkOrder = getWorkOrder;
-const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { observations, ot_type, license_vehicle, spares } = req.body;
+const getWorkOrderByOtNumber = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const workOrder = yield WorkOrder_1.WorkOrder.findByPk(id);
+        if (!workOrder) {
+            res
+                .status(404)
+                .json({
+                message: "No se encontró la orden de trabajo",
+                type: "notFound",
+            });
+        }
+        const spares = yield workOrder.getSpares();
+        console.log("ubicando spares" + spares);
+        return res.status(200).json({ workOrder, spares });
+    }
+    catch (error) { }
+});
+exports.getWorkOrderByOtNumber = getWorkOrderByOtNumber;
+const updateWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { observations, ot_type, license_vehicle, spares, status } = req.body;
+    const { id } = req.params;
     /**
      * Validar el stock de repuestos antes de la creación
      * En el caso de que el stock sea mayor o igual, descontarlo y continuar con la creación
@@ -72,7 +92,9 @@ const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
      */
     const spares_ids = spares.map((ids) => ids.id);
     try {
-        const spareInstances = yield Spare_1.Spare.findAll({ where: { code_id: spares_ids } });
+        const spareInstances = yield Spare_1.Spare.findAll({
+            where: { code_id: spares_ids },
+        });
         if (spareInstances.length !== spares_ids.length) {
             return res
                 .status(400)
@@ -89,16 +111,17 @@ const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         //Descontar stock de todos los repuestos necesarios
         yield substractStock(spares);
-        const workOrder = yield WorkOrder_1.WorkOrder.create({
+        const workOrder = yield WorkOrder_1.WorkOrder.update({
             observations,
             ot_type,
             license_vehicle,
-        });
-        const spareIds = spareInstances
-            .map((spare) => spare.code_id)
-            .filter((id) => id !== undefined);
-        yield workOrder.addSpares(spareIds);
-        res.status(201).json({ workOrder });
+            status,
+        }, { where: { ot_number: id } });
+        // const spareIds = spareInstances
+        //   .map((spare) => spare.code_id)
+        //   .filter((id): id is string => id !== undefined);
+        // await (workOrder as WorkOrderInstance).addSpares(spareIds);
+        res.status(200).json({ workOrder });
     }
     catch (error) {
         if (error instanceof sequelize_1.ValidationError) {
@@ -108,6 +131,57 @@ const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             res.status(500).json({ message: error.message });
         }
     }
+});
+exports.updateWorkOrder = updateWorkOrder;
+const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { observations, ot_type, license_vehicle, spares, is_confirmed, is_payment, } = req.body;
+    const { id } = req.params;
+    const spares_ids = spares.map((ids) => ids.id);
+    try {
+        const spareInstances = yield Spare_1.Spare.findAll({
+            where: { code_id: spares_ids },
+        });
+        if (spareInstances.length !== spares_ids.length) {
+            return res
+                .status(400)
+                .json({ message: "Algún repuesto no existe en la BD" });
+        }
+        const sparesWithoutStock = yield validateSpareStock(spares);
+        if (sparesWithoutStock.length > 0) {
+            return res.status(400).json({
+                sparesWithoutStock,
+                message: "No se pudo crear la orden de trabajo debido a falta de stock de algún(s) repuestos",
+                type: "outStock",
+            });
+        }
+        if (is_confirmed) {
+            console.log("La orden está confirmada y se procede a restar el stock");
+            yield substractStock(spares);
+            // const workOrder = await WorkOrder.update(
+            //   {
+            //     observations,
+            //     ot_type,
+            //     license_vehicle,
+            //     is_confirmed,
+            //     is_payment,
+            //   },
+            //   { where: { ot_number: id } }
+            // );
+        }
+        const workOrder = yield WorkOrder_1.WorkOrder.create({
+            observations,
+            ot_type,
+            license_vehicle,
+            is_confirmed,
+            is_payment,
+        });
+        const spareIds = spareInstances
+            .map((spare) => spare.code_id)
+            .filter((id) => id !== undefined);
+        yield workOrder.addSpares(spareIds);
+        res.status(201).json({ workOrder });
+    }
+    catch (error) { }
 });
 exports.addWorkOrder = addWorkOrder;
 //# sourceMappingURL=WorkOrder.js.map
