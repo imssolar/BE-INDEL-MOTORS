@@ -13,6 +13,7 @@ exports.addWorkOrder = exports.updateWorkOrder = exports.getWorkOrderByOtNumber 
 const WorkOrder_1 = require("../models/WorkOrder");
 const sequelize_1 = require("sequelize");
 const Spare_1 = require("../models/Spare");
+const OrderGroup_1 = require("../models/OrderGroup");
 const validateSpareStock = (spares) => __awaiter(void 0, void 0, void 0, function* () {
     const resValidate = [];
     for (const spare of spares) {
@@ -67,16 +68,17 @@ const getWorkOrderByOtNumber = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         const workOrder = yield WorkOrder_1.WorkOrder.findByPk(id);
         if (!workOrder) {
-            res
-                .status(404)
-                .json({
+            return res.status(404).json({
                 message: "No se encontró la orden de trabajo",
                 type: "notFound",
             });
         }
+        const otType = yield OrderGroup_1.OrderGroup.findByPk(workOrder.ot_type);
+        const otTypeProps = (otType === null || otType === void 0 ? void 0 : otType.id) + "-" + (otType === null || otType === void 0 ? void 0 : otType.name);
         const spares = yield workOrder.getSpares();
         console.log("ubicando spares" + spares);
-        return res.status(200).json({ workOrder, spares });
+        const obj = { workOrder, spares, otTypeProps };
+        return res.status(200).json(obj);
     }
     catch (error) { }
 });
@@ -115,7 +117,6 @@ const updateWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function
             observations,
             ot_type,
             license_vehicle,
-            status,
         }, { where: { ot_number: id } });
         // const spareIds = spareInstances
         //   .map((spare) => spare.code_id)
@@ -168,12 +169,16 @@ const addWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             //   { where: { ot_number: id } }
             // );
         }
+        const arrayMaps = spares
+            .map((spare) => `${spare.id},${spare.stock}`)
+            .join("|");
         const workOrder = yield WorkOrder_1.WorkOrder.create({
             observations,
             ot_type,
             license_vehicle,
             is_confirmed,
             is_payment,
+            spares_stock: arrayMaps,
         });
         const spareIds = spareInstances
             .map((spare) => spare.code_id)

@@ -29,6 +29,10 @@ exports.WorkOrder = db_1.sequelize.define("work_order", {
         type: sequelize_1.DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    spares_stock: {
+        type: sequelize_1.DataTypes.STRING,
+        defaultValue: ''
+    }
 });
 exports.WorkOrder.belongsTo(Vehicle_1.Vehicle, { foreignKey: "license_vehicle" });
 // WorkOrder.belongsTo(Spare, { foreignKey: 'spares_ids' })

@@ -3,14 +3,21 @@ import { sequelize } from "../db";
 import { OrderGroup } from "./OrderGroup";
 import { Spare } from "./Spare";
 import { Vehicle } from "./Vehicle";
+import { IWorkOrder } from "../interfaces/WorkOrder";
 
-export interface WorkOrderInstance extends Model {
+
+interface IWorkOrderModel extends Model<IWorkOrder>,IWorkOrder {}
+
+
+
+
+export interface WorkOrderInstance extends Model<IWorkOrder> {
   addSpare: (spareCodeId: string) => Promise<void>;
   addSpares: (spareCodeIds: string[]) => Promise<void>;
   getSpares: () => Promise<void>;
 }
 
-export const WorkOrder = sequelize.define("work_order", {
+export const WorkOrder = sequelize.define<IWorkOrderModel>("work_order", {
   ot_number: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -33,6 +40,10 @@ export const WorkOrder = sequelize.define("work_order", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  spares_stock:{
+    type:DataTypes.STRING,
+    defaultValue:''
+  }
 });
 
 WorkOrder.belongsTo(Vehicle, { foreignKey: "license_vehicle" });

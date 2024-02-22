@@ -1,15 +1,18 @@
-import { DataTypes } from 'sequelize'
-import { sequelize } from '../db'
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../db";
+import { IOrderGroup } from "../interfaces/OrderGroup";
 
-export const OrderGroup = sequelize.define('order_group', {
-	id: {
-		type: DataTypes.INTEGER,
-		primaryKey: true,
-		allowNull: false,
-		autoIncrement:true
-	},
-	name: {
-		type: DataTypes.STRING,
-		allowNull: false
-	}
-})
+interface OrderGroupModel extends Model<IOrderGroup>, IOrderGroup {}
+
+export const OrderGroup = sequelize.define<OrderGroupModel>("order_group", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});

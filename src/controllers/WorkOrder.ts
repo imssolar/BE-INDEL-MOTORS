@@ -75,16 +75,19 @@ export const getWorkOrderByOtNumber = async (req: Request, res: Response) => {
   try {
     const workOrder = await WorkOrder.findByPk(id);
     if (!workOrder) {
-      res
-        .status(404)
-        .json({
-          message: "No se encontró la orden de trabajo",
-          type: "notFound",
-        });
+      return res.status(404).json({
+        message: "No se encontró la orden de trabajo",
+        type: "notFound",
+      });
     }
-    const spares = await (workOrder as WorkOrderInstance).getSpares();
-    console.log("ubicando spares" + spares)
-    return res.status(200).json({workOrder,spares})
+    const otType = await OrderGroup.findByPk(workOrder.ot_type);
+    const otTypeProps = otType?.id + "-" + otType?.name;
+    const spares = await (
+      workOrder as unknown as WorkOrderInstance
+    ).getSpares();
+    console.log("ubicando spares" + spares);
+    const obj = { workOrder, spares, otTypeProps };
+    return res.status(200).json(obj);
   } catch (error) {}
 };
 
@@ -125,7 +128,6 @@ export const updateWorkOrder = async (req: Request, res: Response) => {
         observations,
         ot_type,
         license_vehicle,
-        status,
       },
       { where: { ot_number: id } }
     );
@@ -189,17 +191,22 @@ export const addWorkOrder = async (req: Request, res: Response) => {
       // );
     }
 
+    const arrayMaps = spares
+      .map((spare: any) => `${spare.id},${spare.stock}`)
+      .join("|");
+
     const workOrder = await WorkOrder.create({
       observations,
       ot_type,
       license_vehicle,
       is_confirmed,
       is_payment,
+      spares_stock: arrayMaps,
     });
     const spareIds = spareInstances
       .map((spare) => spare.code_id)
       .filter((id): id is string => id !== undefined);
-    await (workOrder as WorkOrderInstance).addSpares(spareIds);
+    await (workOrder as unknown as WorkOrderInstance).addSpares(spareIds);
     res.status(201).json({ workOrder });
   } catch (error) {}
 };
