@@ -27,18 +27,20 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const findUser = yield User_1.User.findByPk(email);
         if (!findUser) {
-            return res.status(400).json({ message: 'El email no está registrado' });
+            return res
+                .status(400)
+                .json({ message: "El email no está registrado", type: "notFound" });
         }
         const isValidPassword = bcryptjs_1.default.compareSync(pass, findUser.password);
         if (!isValidPassword) {
-            return res.status(400).json({ message: 'El password es incorrecto' });
+            return res
+                .status(400)
+                .json({ message: "El password es incorrecto", type: "error" });
         }
         const generateResponse = yield (0, generateJWT_1.generateJWT)(findUser.email);
         const { name, last_name, email: email_user, roleName, enabled } = findUser;
-        return res
-            .status(200)
-            .json({
-            message: 'Login exitoso',
+        return res.status(200).json({
+            message: "Login exitoso",
             token: generateResponse,
             user: { name, last_name, email: email_user, roleName, enabled },
         });

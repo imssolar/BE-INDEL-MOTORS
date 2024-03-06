@@ -92,7 +92,8 @@ export const getWorkOrderByOtNumber = async (req: Request, res: Response) => {
 };
 
 export const updateWorkOrder = async (req: Request, res: Response) => {
-  const { observations, ot_type, license_vehicle, spares, status } = req.body;
+  const { observations, ot_type, license_vehicle, spares,  is_confirmed,
+    is_payment } = req.body;
   const { id } = req.params;
   /**
    * Validar el stock de repuestos antes de la creación
@@ -128,6 +129,8 @@ export const updateWorkOrder = async (req: Request, res: Response) => {
         observations,
         ot_type,
         license_vehicle,
+        is_confirmed,
+        is_payment,
       },
       { where: { ot_number: id } }
     );

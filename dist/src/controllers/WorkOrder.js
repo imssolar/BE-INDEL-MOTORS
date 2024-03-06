@@ -84,7 +84,7 @@ const getWorkOrderByOtNumber = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 exports.getWorkOrderByOtNumber = getWorkOrderByOtNumber;
 const updateWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { observations, ot_type, license_vehicle, spares, status } = req.body;
+    const { observations, ot_type, license_vehicle, spares, is_confirmed, is_payment } = req.body;
     const { id } = req.params;
     /**
      * Validar el stock de repuestos antes de la creación
@@ -117,6 +117,8 @@ const updateWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function
             observations,
             ot_type,
             license_vehicle,
+            is_confirmed,
+            is_payment,
         }, { where: { ot_number: id } });
         // const spareIds = spareInstances
         //   .map((spare) => spare.code_id)
