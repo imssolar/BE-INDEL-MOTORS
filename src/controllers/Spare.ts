@@ -1,74 +1,74 @@
-import { Request, Response } from "express";
-import { Spare } from "../models/Spare";
+import { Request, Response } from 'express'
+import { Spare } from '../models/Spare'
 
 export const getSpares = async (req: Request, res: Response) => {
-  try {
-    const spares = await Spare.findAll();
-    res.status(200).json(spares);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
+	try {
+		const spares = await Spare.findAll()
+		res.status(200).json(spares)
+	} catch (error: any) {
+		res.status(500).json({ message: error.message })
+	}
+}
 
 export const getSpare = async (req: Request, res: Response) => {
-  const { id } = req.params;
+	const { id } = req.params
 
-  try {
-    const spare = await Spare.findByPk(id);
-    res.status(200).json(spare);
-  } catch (error) {
-    console.log(error);
-  }
-};
+	try {
+		const spare = await Spare.findByPk(id)
+		res.status(200).json(spare)
+	} catch (error) {
+		console.log(error)
+	}
+}
 
 export const getSpareByCode = async (req: Request, res: Response) => {
-  const { code_id } = req.params;
+	const { code_id } = req.params
 
-  try {
+	try {
 	/*Ejecutar una búsqueda con condicional LIKE para que encuentre los similares*/
-    const spare = await Spare.findOne({ where: { code_id } });
-    res.status(200).json(spare);
-  } catch (error) {
-    console.log(error);
-  }
-};
+		const spare = await Spare.findOne({ where: { code_id } })
+		res.status(200).json(spare)
+	} catch (error) {
+		console.log(error)
+	}
+}
 
 export const addSpare = async (req: Request, res: Response) => {
-  const { name, cost, stock, unit_id, spareGroup_id, code_id } = req.body;
-  try {
-    const newSpare = await Spare.create({
-      name,
-      cost,
-      stock,
-      unit_id,
-      spareGroup_id,
-      code_id,
-    });
-    res.status(200).json({ newSpare });
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-};
+	const { name, cost, stock, unit_id, spareGroup_id, code_id } = req.body
+	try {
+		const newSpare = await Spare.create({
+			name,
+			cost,
+			stock,
+			unit_id,
+			spareGroup_id,
+			code_id,
+		})
+		res.status(200).json({ newSpare })
+	} catch (error) {
+		res.status(500).json({ message: error })
+	}
+}
 
 export const deleteSpare = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const spareToDelete = await Spare.findByPk(id);
-    if (spareToDelete) {
-      spareToDelete.update({ status: false });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-};
+	const { id } = req.params
+	try {
+		const spareToDelete = await Spare.findByPk(id)
+		if (spareToDelete) {
+			spareToDelete.update({ status: false })
+		}
+	} catch (error) {
+		res.status(500).json({ message: error })
+	}
+}
 
 export const updateSpare = async (req: Request, res: Response) => {
-  const { code_id } = req.params;
-  const { name, cost, stock } = req.body;
-  try {
-    Spare.update({ name, cost, stock }, { where: { code_id } });
-    res.status(200).json({});
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-};
+	const { code_id } = req.params
+	const { name, cost, stock } = req.body
+	try {
+		Spare.update({ name, cost, stock }, { where: { code_id } })
+		res.status(200).json({})
+	} catch (error) {
+		res.status(500).json({ message: error })
+	}
+}

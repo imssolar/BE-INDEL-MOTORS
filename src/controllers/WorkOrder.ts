@@ -94,7 +94,8 @@ export const getWorkOrderByOtNumber = async (req: Request, res: Response) => {
 }
 
 export const updateWorkOrder = async (req: Request, res: Response) => {
-	const { observations, ot_type, license_vehicle, spares } = req.body
+	const { observations, ot_type, license_vehicle, spares,  is_confirmed,
+		is_payment } = req.body
 	const { id } = req.params
 	/**
    * Validar el stock de repuestos antes de la creación
@@ -102,9 +103,20 @@ export const updateWorkOrder = async (req: Request, res: Response) => {
    * en caso contrario arrojar error al usuario
    *
    */
-	const workOrder = await WorkOrder.findByPk(id)
+	const workOrderByID = await WorkOrder.findByPk(id)
+	console.log('workOrderByID', workOrderByID)
 
-	console.log('workOrder', workOrder)
+	//TODO:
+	/** Queda validar que cuando se actualice el stock se actualice tambien en la WO
+		 Te lo deje por consola la data que viene cuando haces el getByID,
+		 viene el valor pares_stock (recorda que es id,numero de stock), 
+		 necesitas que ese valor se actualice es decir ejemplo:
+		 si tenes 3 stock y agregas dos es decir en el front envias 5 necesitas actualizar ese numero que pase de 3 a 5
+		 lo mismo si restas si tenes 3 stock y sacas 2 tiene que quedar uno
+		 la logica de suma o resta contra spares ya esta solo queda el lado visual
+		*/
+	//TODO:
+
 	const spares_ids = spares.map((ids: any) => ids.id)
 	try {
 		const spareInstances = await Spare.findAll({
@@ -126,21 +138,18 @@ export const updateWorkOrder = async (req: Request, res: Response) => {
 			})
 		}
 
-		//TODO: Queda validar que cuando se actualice el stock se actualice tambien en la WO
-
+		//Descontar stock de todos los repuestos necesarios
 		await substractStock(spares)
 		const workOrder = await WorkOrder.update(
 			{
 				observations,
 				ot_type,
 				license_vehicle,
+				is_confirmed,
+				is_payment,
 			},
 			{ where: { ot_number: id } }
 		)
-		// const spareIds = spareInstances
-		//   .map((spare) => spare.code_id)
-		//   .filter((id): id is string => id !== undefined);
-		// await (workOrder as WorkOrderInstance).addSpares(spareIds);
 		res.status(200).json({ workOrder })
 	} catch (error: any) {
 		if (error instanceof SequelizeValidationError) {

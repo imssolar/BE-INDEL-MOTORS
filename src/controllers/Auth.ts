@@ -14,26 +14,28 @@ export const Login = async (req: Request, res: Response) => {
 	try {
 		const findUser = await User.findByPk(email)
 		if (!findUser) {
-			return res.status(400).json({ message: 'El email no está registrado' })
+			return res
+				.status(400)
+				.json({ message: 'El email no está registrado', type: 'notFound' })
 		}
 		const isValidPassword = bcrypt.compareSync(pass, findUser.password)
 		if (!isValidPassword) {
-			return res.status(400).json({ message: 'El password es incorrecto' })
+			return res
+				.status(400)
+				.json({ message: 'El password es incorrecto', type: 'error' })
 		}
 		const generateResponse = await generateJWT(findUser.email)
 		const { name, last_name, email: email_user, roleName, enabled } = findUser
-		return res
-			.status(200)
-			.json({
-				message: 'Login exitoso',
-				token: generateResponse,
-				user: { name, last_name, email: email_user, roleName, enabled },
-			})
+		return res.status(200).json({
+			message: 'Login exitoso',
+			token: generateResponse,
+			user: { name, last_name, email: email_user, roleName, enabled },
+		})
 	} catch (error) {
 		console.log(error)
 	}
 }
 
-export const getUserByToken=(req:Request)=>{
+export const getUserByToken = (req: Request) => {
 	console.log(req)
 }

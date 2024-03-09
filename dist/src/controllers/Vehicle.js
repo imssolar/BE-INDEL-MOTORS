@@ -13,7 +13,7 @@ exports.updateVehicle = exports.deleteVehicle = exports.addVehicle = exports.get
 const Vehicle_1 = require("../models/Vehicle");
 const Client_1 = require("../models/Client");
 const getVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("get vehicles");
+    console.log('get vehicles');
     try {
         const vehicles = yield Vehicle_1.Vehicle.findAll();
         res.status(200).json({ vehicles });
@@ -25,12 +25,12 @@ const getVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getVehicles = getVehicles;
 const getVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { license_plate } = req.params;
-    console.log("id vehiculo", license_plate);
+    console.log('id vehiculo', license_plate);
     try {
         const vehicle = yield Vehicle_1.Vehicle.findByPk(license_plate, {
             include: {
                 model: Client_1.Client,
-                as: "client",
+                as: 'client',
             },
         });
         res.status(200).json({ vehicle });
@@ -41,7 +41,7 @@ const getVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getVehicle = getVehicle;
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("añadiendo vehículo");
+    console.log('añadiendo vehículo');
     const { license_plate, brand, model, year_production, vin_number, rut_client, } = req.body;
     try {
         const isVehicleCreated = yield Vehicle_1.Vehicle.findByPk(license_plate);
@@ -55,7 +55,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         else if (!isUserCreated) {
             res.status(400).json({
                 message: `El cliente con el rut ${rut_client} no se encuentra en la base de datos`,
-                type: "error",
+                type: 'error',
             });
             return;
         }
@@ -69,7 +69,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
         res.status(200).json({
             message: `El vehículo con la patente ${license_plate} ha sido creado!`,
-            type: "info",
+            type: 'info',
         });
     }
     catch (error) {
@@ -85,7 +85,7 @@ const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             vehicle.destroy();
             res.status(200).json({
                 message: `El vehículo con la patente ${license_plate} ha sido eliminado!`,
-                type: "info",
+                type: 'info',
             });
         }
     }
@@ -99,10 +99,10 @@ const updateVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { brand, model, year_production, vin_number } = req.body;
     try {
         Vehicle_1.Vehicle.update({ license_plate, brand, model, year_production, vin_number }, { where: { license_plate } });
-        res.status(200).json({ message: "Vehicle updated!" });
+        res.status(200).json({ message: 'Vehicle updated!' });
     }
     catch (error) {
-        res.status(500).json({ message: "error" });
+        res.status(500).json({ message: 'error' });
     }
 });
 exports.updateVehicle = updateVehicle;

@@ -87,7 +87,7 @@ const getWorkOrderByOtNumber = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 exports.getWorkOrderByOtNumber = getWorkOrderByOtNumber;
 const updateWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { observations, ot_type, license_vehicle, spares } = req.body;
+    const { observations, ot_type, license_vehicle, spares, is_confirmed, is_payment } = req.body;
     const { id } = req.params;
     /**
    * Validar el stock de repuestos antes de la creación
@@ -95,8 +95,18 @@ const updateWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function
    * en caso contrario arrojar error al usuario
    *
    */
-    const workOrder = yield WorkOrder_1.WorkOrder.findByPk(id);
-    console.log('workOrder', workOrder);
+    const workOrderByID = yield WorkOrder_1.WorkOrder.findByPk(id);
+    console.log('workOrderByID', workOrderByID);
+    //TODO:
+    /** Queda validar que cuando se actualice el stock se actualice tambien en la WO
+         Te lo deje por consola la data que viene cuando haces el getByID,
+         viene el valor pares_stock (recorda que es id,numero de stock),
+         necesitas que ese valor se actualice es decir ejemplo:
+         si tenes 3 stock y agregas dos es decir en el front envias 5 necesitas actualizar ese numero que pase de 3 a 5
+         lo mismo si restas si tenes 3 stock y sacas 2 tiene que quedar uno
+         la logica de suma o resta contra spares ya esta solo queda el lado visual
+        */
+    //TODO:
     const spares_ids = spares.map((ids) => ids.id);
     try {
         const spareInstances = yield Spare_1.Spare.findAll({
@@ -116,17 +126,15 @@ const updateWorkOrder = (req, res) => __awaiter(void 0, void 0, void 0, function
                 type: 'outStock',
             });
         }
-        //TODO: Queda validar que cuando se actualice el stock se actualice tambien en la WO
+        //Descontar stock de todos los repuestos necesarios
         yield substractStock(spares);
         const workOrder = yield WorkOrder_1.WorkOrder.update({
             observations,
             ot_type,
             license_vehicle,
+            is_confirmed,
+            is_payment,
         }, { where: { ot_number: id } });
-        // const spareIds = spareInstances
-        //   .map((spare) => spare.code_id)
-        //   .filter((id): id is string => id !== undefined);
-        // await (workOrder as WorkOrderInstance).addSpares(spareIds);
         res.status(200).json({ workOrder });
     }
     catch (error) {
