@@ -31,33 +31,33 @@ const brand_1 = __importDefault(require("../routes/brand"));
 const cors_1 = __importDefault(require("cors"));
 const swaggerOptions = {
     swaggerDefinition: {
-        openapi: "3.0.0",
+        openapi: '3.0.0',
         info: {
-            title: "Mi API",
-            version: "1.0.0",
-            description: "doc",
+            title: 'Mi API',
+            version: '1.0.0',
+            description: 'doc',
         },
     },
-    apis: ["./src/routes/*.ts"],
+    apis: ['./src/routes/*.ts'],
 };
 class Server {
     constructor() {
         this.swaggerSpec = (0, swagger_jsdoc_1.default)(swaggerOptions);
         this.apiPaths = {
-            accountsPath: "/api/account",
-            workOrderPath: "/api/workorder",
-            sparePath: "/api/spare",
-            unitPath: "/api/unit",
-            vehiclePath: "/api/vehicle",
-            orderGroupPath: "/api/ordergroup",
-            spareGroupPath: "/api/spareGroup",
-            userPath: "/api/user",
-            rolePath: "/api/role",
-            authPath: "/api/auth",
-            brandPath: "/api/brand",
+            accountsPath: '/api/account',
+            workOrderPath: '/api/workorder',
+            sparePath: '/api/spare',
+            unitPath: '/api/unit',
+            vehiclePath: '/api/vehicle',
+            orderGroupPath: '/api/ordergroup',
+            spareGroupPath: '/api/spareGroup',
+            userPath: '/api/user',
+            rolePath: '/api/role',
+            authPath: '/api/auth',
+            brandPath: '/api/brand',
         };
         this.app = (0, express_1.default)();
-        this.port = "4000";
+        this.port = process.env.NODE_ENV === 'dev' ? process.env.PORT_DEV : process.env.PORT_PRD;
         this.conectarDB();
         this.middlewares();
         this.routes();
@@ -84,7 +84,7 @@ class Server {
         this.app.use(this.apiPaths.rolePath, role_1.default);
         this.app.use(this.apiPaths.authPath, auth_1.default);
         this.app.use(this.apiPaths.brandPath, brand_1.default);
-        this.app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(this.swaggerSpec));
+        this.app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(this.swaggerSpec));
     }
     listen() {
         this.app.listen(this.port, () => {
